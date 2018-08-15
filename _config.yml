@@ -1,6 +1,6 @@
 # Site settings
-title: huaileicoder blog
-SEOTitle: 你的博客 | Your Blog
+title: huailei blog
+SEOTitle: huailei的博客 | huailei Blog
 header-img: img/home-bg.jpg
 email: huailei2017@gmail.com
 description: ""
@@ -68,7 +68,7 @@ ga_domain: huangxuan.me
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "写写代码，做做设计，看看产品。世界那么大，多玩玩看看。"
+sidebar-about-description: ""
 sidebar-avatar: /img/avatar-hux.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
@@ -82,7 +82,7 @@ featured-condition-size: 1              # A tag will be featured if the size of 
 # Friends
 friends: [
     {
-        title: "huailei Blog",
+        title: "Blog",
         href: 
     },{
         title: "Foo",
