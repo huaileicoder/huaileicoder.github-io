@@ -11,6 +11,7 @@ tags:
 
 > “Yeah It's on. ”
 
+> i love you
 
-##first blog
-搭建jekyll之后使用模板写的一篇测试博客
+## 正文
+这是第一篇学习markdown语法博客
