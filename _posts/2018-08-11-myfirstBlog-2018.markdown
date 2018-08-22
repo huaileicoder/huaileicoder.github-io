@@ -12,5 +12,29 @@ tags:
 > “Yeah It's on. ”
 
 
-##first blog
-搭建jekyll之后使用模板写的一篇测试博客
+## 正文
+  搭建jekyll之后使用模板写的一篇测试博客
+
+  因为自己的惰性，这个博客从开始搭建到现在已经两个星期了，很遗憾今天才开始测试     
+  那现在开始吧       
+  
+  [我的GitHub](https://github.com/huaileicoder)  <https://github.com/huaileicoder/>
+  
+  
+## 其他
+这是一篇学习markdown的测试文章，所以就有一下几点
+- 文字**加粗**，*斜体*
+- 插入图片
+- 代码
+
+![测试图片](img/post-bg-2015.jpg) emmmmm，不知道为什么在本地图片没有加载出来，难道电脑太垃圾了吗
+
+接下来测试插入代码
+```
+public class HelloWorld {
+    public static void main(String[] args) {
+	    System.out.println("HelloWorld");
+	}
+}
+```
+然后这里是`gem install jekyll`
