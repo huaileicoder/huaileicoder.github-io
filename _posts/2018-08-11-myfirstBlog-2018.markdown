@@ -6,6 +6,7 @@ date:       2018-08-11 17:53
 author:     "huailei"
 header-img: "img/post-bg-2015.jpg"
 tags:
+    -Life
     
 ---
 
