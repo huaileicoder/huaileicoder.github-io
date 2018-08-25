@@ -100,11 +100,28 @@ layout: default
                     {% endfor %}
                 </ul>
                 {% endif %}
-            </div>
+            </div>		
         </div>
+		
+		<div id="gitmentContainer"></div>
+		<link rel="stylesheet" href="/css/gitment.css" />
+		<script src="/js/gitment.js"></script>
     </div>
 </article>
 
+
+
+<script>
+	var gitment = new Gitment({
+		owner: 'huaileicoder',
+		repo: 'huaileicoder.github.io',
+		oauth: {
+			client_id: '397e0b72052c93816d18',
+			client_secret: '666a12fc008ea8e25c1992f8e810c3d485073e7a',
+		},
+	});
+	gitment.render('gitmentContainer');
+</script>
 
 {% if site.anchorjs %}
 <!-- async load function -->

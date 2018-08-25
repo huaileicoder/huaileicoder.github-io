@@ -3,7 +3,7 @@ title: huailei blog
 SEOTitle: 怀雷 | huailei Blog
 header-img: img/home-bg.jpg
 email: huailei2017@gmail.com
-description: ""
+description: "Trust The Process"
 keyword: "Trust The Process"
 url:               # your host, for absolute URL
 baseurl:          # for example, '/blog' if your blog hosted on 'host/blog'
@@ -13,7 +13,7 @@ future: true
 
 # SNS settings
 RSS: false
-zhihu_username:     huaileicoder
+zhihu_username:     
 github_username:    huaileicoder
 twitter_username:  
 #facebook_username:  huaileicoder
@@ -82,6 +82,12 @@ featured-condition-size: 1              # A tag will be featured if the size of 
 # Progressive Web Apps
 chrome-tab-theme-color: "#000000"
 service-worker: true
+
+
+#gitment
+comment_gitment_repo: huaileicoder
+comment_gitment_clientId: 397e0b72052c93816d18
+comment_gitment_clientSecret: 666a12fc008ea8e25c1992f8e810c3d485073e7a
 
 
 
