@@ -5,9 +5,73 @@
     <description>Trust The Process</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 01 Sep 2018 12:02:28 +0800</pubDate>
-    <lastBuildDate>Sat, 01 Sep 2018 12:02:28 +0800</lastBuildDate>
+    <pubDate>Sat, 01 Sep 2018 17:52:12 +0800</pubDate>
+    <lastBuildDate>Sat, 01 Sep 2018 17:52:12 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
+    
+      <item>
+        <title>使用jekyll+github pages 搭建个人博客</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;But I Still Love You&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;搭建原因&quot;&gt;搭建原因&lt;/h2&gt;
+&lt;p&gt;作为一个萌新，一直想有一个自己的博客，前一段时间自己试着使用&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll+github pages&lt;/code&gt; 来搭建自己的博客，其中有遇到很多的坑，比如搭建jekyll，以及使用jekyll theme的时候，慢慢的自己也搞懂这是个怎么回事，现在也写下这篇文章来记录一下，希望能对有些人有一点点帮助。&lt;/p&gt;
+
+&lt;h2 id=&quot;搭建环境&quot;&gt;搭建环境&lt;/h2&gt;
+&lt;p&gt;搭建博客需要jekyll以及GitHub，其中GitHub提供一个&lt;code class=&quot;highlighter-rouge&quot;&gt;pages&lt;/code&gt;功能，允许用户自定义项目首页，用来替代默认的源码列表&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;github Pages可以被认为是用户编写的、托管在github上的静态网页&lt;/li&gt;
+  &lt;li&gt;Jekyll是一个静态站点生成器，它会根据网页源码生成静态文件&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;jekyll官网是这样介绍的&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Jekyll 是一个简单的博客形态的静态站点生产机器。它有一个模版目录，其中包含原始文本格式的文档，通过一个转换器（如 Markdown）和我们的 Liquid 渲染器转化成一个完整的可发布的静态网站，你可以发布在任何你喜爱的服务器上。Jekyll 也可以运行在 GitHub Page 上，也就是说，你可以使用 GitHub 的服务来搭建你的项目页面、博客或者网站，而且是完全免费的&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;开始搭建&quot;&gt;开始搭建&lt;/h2&gt;
+&lt;h3 id=&quot;github-pages&quot;&gt;GitHub Pages&lt;/h3&gt;
+&lt;p&gt;首先肯定要使用到GitHub，所以有一个自己的GitHub账号就不要再说了。当有了自己的GitHub账号之后需要创建一个新的仓库，并命名为username.github.io，比如我的username是 
+&lt;code class=&quot;highlighter-rouge&quot;&gt;huaileicoder&lt;/code&gt;，那新建的仓库就是&lt;code class=&quot;highlighter-rouge&quot;&gt;huaileicoder.github.io&lt;/code&gt;。  &lt;br /&gt;
+&lt;img src=&quot;/img/github-create new repository.png&quot; alt=&quot;新建一个仓库&quot; /&gt;&lt;br /&gt;
+创建好之后进入仓库中选择setting，找到&lt;code class=&quot;highlighter-rouge&quot;&gt;GitHub Pages&lt;/code&gt;，然后将你的site发布到&lt;code class=&quot;highlighter-rouge&quot;&gt;https://username.github.io/&lt;/code&gt;。&lt;br /&gt;
+&lt;img src=&quot;/img/github-pages.png&quot; alt=&quot;github-pages&quot; /&gt;
+我们去访问&lt;code class=&quot;highlighter-rouge&quot;&gt;https://username.github.io/&lt;/code&gt;，会发现只有一个简单的页面。&lt;/p&gt;
+
+&lt;h3 id=&quot;安装jekyll&quot;&gt;安装jekyll&lt;/h3&gt;
+&lt;p&gt;安装jekyll其实非常简单，但是你得做好一些准备工作，根据jekyll官网上介绍需要：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Ruby&lt;/li&gt;
+  &lt;li&gt;RubyGems&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;所以需要前往&lt;a href=&quot;https://rubyinstaller.org/downloads/&quot;&gt;https://rubyinstaller.org/downloads/&lt;/a&gt;下载&lt;code class=&quot;highlighter-rouge&quot;&gt;Ruby&lt;/code&gt;以及&lt;code class=&quot;highlighter-rouge&quot;&gt;DEVELOPMENT KIT &lt;/code&gt;，DEVELOPMENT KIT有不同的版本，可以根据你的系统选择相应的工具。&lt;br /&gt;
+安装ruby的时候，根据的你的选择放到相应的盘中，并且勾选&lt;code class=&quot;highlighter-rouge&quot;&gt;Add Ruby executables to your PATH&lt;/code&gt;。&lt;br /&gt;
+安装好ruby之后可以使用指令&lt;code class=&quot;highlighter-rouge&quot;&gt;ruby -v&lt;/code&gt;查看ruby是否安装完成&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:\Users\Administrator&amp;gt;ruby -v
+ruby 2.5.1p57 (2018-03-29 revision 63029) [x64-mingw32]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;安装dev kit 的时候一般把安装目录改为RubyDevKit，安装好dev-kit之后，使用终端(就是Windows下使用cmd启动的那个小黑窗)进入RubyDevKit目录，然后执行&lt;code class=&quot;highlighter-rouge&quot;&gt;ruby dk.rb init&lt;/code&gt;，然后使用文本编辑器打开RubyDevKit目录中的&lt;code class=&quot;highlighter-rouge&quot;&gt;config.yml&lt;/code&gt;。在文件的最后加上&lt;code class=&quot;highlighter-rouge&quot;&gt;- D:/Ruby25-x64&lt;/code&gt;，这是自己的Ruby安装目录，然后在刚才的终端下执行&lt;code class=&quot;highlighter-rouge&quot;&gt;ruby dk.rb install&lt;/code&gt;。&lt;br /&gt;
+接着在终端中输入&lt;code class=&quot;highlighter-rouge&quot;&gt;gem -v&lt;/code&gt;，可以看到相应的gem版本。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem -v
+2.7.6
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;然后执行&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install jekyll&lt;/code&gt;安装jekyll，因为jekyll很多安装包是由&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle&lt;/code&gt;来安装的，并且如果没有的话启动jekyll会报错的，所以需要接着执行&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install bundle&lt;/code&gt;，也可以直接这样&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install jekyll bundle&lt;/code&gt;来安装。安装好之后执行&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll new dir&lt;/code&gt;，然后在终端中&lt;code class=&quot;highlighter-rouge&quot;&gt;cd dir&lt;/code&gt;接着执行&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle install&lt;/code&gt;来安装jekyll的依赖包，可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle update&lt;/code&gt;来进行依赖包的更新。所有准备工作都做好之后，那就直接执行&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;，会有一些版本不匹配的问题，可以看到终端上会有提示信息让你使用&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle exec jekyll serve&lt;/code&gt;来启动jekyll，正常启动之后访问&lt;code class=&quot;highlighter-rouge&quot;&gt;http://127.0.0.1:4000&lt;/code&gt;来进入。这时候我们只能看到一个简单地页面，所以一般我们都会使用到别人已经做好的模板，当然你能力足够的话完全可以自己来写。&lt;/p&gt;
+
+&lt;h2 id=&quot;后记&quot;&gt;后记&lt;/h2&gt;
+&lt;p&gt;当第一次使用&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll+github pages&lt;/code&gt;来搭建博客的时候，不知道自己要做什么，就在Google查相关的信息，这样的信息还是不少的，所以在这里感谢那些在网上贡献自己知识的人。我不知道自己多少次安了卸，卸了安，安装的过程中自己根据终端的错误信息，以及网上的教程，就知道什么样的错误该怎么解决，所以呢，如果对这方面不是有些了解的话，你一次就安装成功之后可以卸载，然后自己再按着这样的方式再去安装，安装的时候可以更换ruby的版本，我想你会有不同的体验的。安装的教程也可以参考 &lt;a href=&quot;http://jekyllcn.com/&quot;&gt;jekyll官网&lt;/a&gt;，里面有更加详细的信息。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 01 Sep 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/09/01/%E4%BD%BF%E7%94%A8jekyll+github-pages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/09/01/%E4%BD%BF%E7%94%A8jekyll+github-pages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</guid>
+        
+        <category>-jekyll</category>
+        
+        <category>-githubpages</category>
+        
+        
+      </item>
     
       <item>
         <title>huailei first blog</title>
@@ -31,7 +95,7 @@
   &lt;li&gt;代码&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;img/post-bg-2015.jpg&quot; alt=&quot;测试图片&quot; /&gt; emmmmm，不知道为什么在本地图片没有加载出来，难道电脑太垃圾了吗&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/post-bg-2015.jpg&quot; alt=&quot;测试图片&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;接下来测试插入代码&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class HelloWorld {
