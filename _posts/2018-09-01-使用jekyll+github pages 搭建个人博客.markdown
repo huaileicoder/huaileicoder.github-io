@@ -52,5 +52,9 @@ gem -v
 ```
 然后执行`gem install jekyll`安装jekyll，因为jekyll很多安装包是由`bundle`来安装的，并且如果没有的话启动jekyll会报错的，所以需要接着执行`gem install bundle`，也可以直接这样`gem install jekyll bundle`来安装。安装好之后执行`jekyll new dir`，然后在终端中`cd dir`接着执行`bundle install`来安装jekyll的依赖包，可以使用`bundle update`来进行依赖包的更新。所有准备工作都做好之后，那就直接执行`jekyll serve`，会有一些版本不匹配的问题，可以看到终端上会有提示信息让你使用`bundle exec jekyll serve`来启动jekyll，正常启动之后访问`http://127.0.0.1:4000`来进入。这时候我们只能看到一个简单地页面，所以一般我们都会使用到别人已经做好的模板，当然你能力足够的话完全可以自己来写。
 
+## jekyll theme
+使用jekyll原始的页面是非常简陋的，所以我们可以使用别人写好的jekyll theme来搭建一个"面相姣好"的博客页面。[这里](http://jekyllthemes.org)有许多模板，你可以挑一款自己喜欢的。我使用的是[Hux](http://huangxuan.me/)修改之后的模板，在[这里](https://github.com/huaileicoder/huxpro.github.io)可以看到你如何修改文件变为你自己的博客，这里只是一个模板，如果你对博客要求的东西不是太多的我想这已经够用了。其中配置`_config.yml`更加详细的信息可以从[jekyll官网](http://jekyllcn.com/)获取。不过需要提醒一句的是文章中涉及到的评论系统`duoshuo`以及`disqus`，`duoshuo`已不能使用，`disqus`很早就被墙了，所以都不能使用，在这里推荐大家使用`gitment`，从网上可以搜到很多的教程来使用`gitment`搭建评论系统。  
+另外在对第一次使用模板的时候可以会因为一些配置文件版本问题不匹配，所以需要自己根据实际情况去解决，不过遇到这些文件不匹配的时候可以试着自己使用`bundle install xxxxx`或者`gem install xxxxxx`去安装对应的文件，如果实在安装不了，可以试着从其他地方找到对应版本号的文件粘贴进去，最后实在不行那就安装一个匹配的jekyll，我想这是遇到自己觉得解决不了的问题的时候最简单的方法。
+
 ## 后记
 当第一次使用`jekyll+github pages`来搭建博客的时候，不知道自己要做什么，就在Google查相关的信息，这样的信息还是不少的，所以在这里感谢那些在网上贡献自己知识的人。我不知道自己多少次安了卸，卸了安，安装的过程中自己根据终端的错误信息，以及网上的教程，就知道什么样的错误该怎么解决，所以呢，如果对这方面不是有些了解的话，你一次就安装成功之后可以卸载，然后自己再按着这样的方式再去安装，安装的时候可以更换ruby的版本，我想你会有不同的体验的。安装的教程也可以参考 [jekyll官网](http://jekyllcn.com/)，里面有更加详细的信息。

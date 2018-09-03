@@ -5,8 +5,8 @@
     <description>Trust The Process</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 01 Sep 2018 18:00:01 +0800</pubDate>
-    <lastBuildDate>Sat, 01 Sep 2018 18:00:01 +0800</lastBuildDate>
+    <pubDate>Mon, 03 Sep 2018 23:43:45 +0800</pubDate>
+    <lastBuildDate>Mon, 03 Sep 2018 23:43:45 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
@@ -58,6 +58,10 @@ ruby 2.5.1p57 (2018-03-29 revision 63029) [x64-mingw32]
 2.7.6
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;然后执行&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install jekyll&lt;/code&gt;安装jekyll，因为jekyll很多安装包是由&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle&lt;/code&gt;来安装的，并且如果没有的话启动jekyll会报错的，所以需要接着执行&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install bundle&lt;/code&gt;，也可以直接这样&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install jekyll bundle&lt;/code&gt;来安装。安装好之后执行&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll new dir&lt;/code&gt;，然后在终端中&lt;code class=&quot;highlighter-rouge&quot;&gt;cd dir&lt;/code&gt;接着执行&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle install&lt;/code&gt;来安装jekyll的依赖包，可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle update&lt;/code&gt;来进行依赖包的更新。所有准备工作都做好之后，那就直接执行&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;，会有一些版本不匹配的问题，可以看到终端上会有提示信息让你使用&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle exec jekyll serve&lt;/code&gt;来启动jekyll，正常启动之后访问&lt;code class=&quot;highlighter-rouge&quot;&gt;http://127.0.0.1:4000&lt;/code&gt;来进入。这时候我们只能看到一个简单地页面，所以一般我们都会使用到别人已经做好的模板，当然你能力足够的话完全可以自己来写。&lt;/p&gt;
+
+&lt;h2 id=&quot;jekyll-theme&quot;&gt;jekyll theme&lt;/h2&gt;
+&lt;p&gt;使用jekyll原始的页面是非常简陋的，所以我们可以使用别人写好的jekyll theme来搭建一个”面相姣好”的博客页面。&lt;a href=&quot;http://jekyllthemes.org&quot;&gt;这里&lt;/a&gt;有许多模板，你可以挑一款自己喜欢的。我使用的是&lt;a href=&quot;http://huangxuan.me/&quot;&gt;Hux&lt;/a&gt;修改之后的模板，在&lt;a href=&quot;https://github.com/huaileicoder/huxpro.github.io&quot;&gt;这里&lt;/a&gt;可以看到你如何修改文件变为你自己的博客，这里只是一个模板，如果你对博客要求的东西不是太多的我想这已经够用了。其中配置&lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;更加详细的信息可以从&lt;a href=&quot;http://jekyllcn.com/&quot;&gt;jekyll官网&lt;/a&gt;获取。不过需要提醒一句的是文章中涉及到的评论系统&lt;code class=&quot;highlighter-rouge&quot;&gt;duoshuo&lt;/code&gt;以及&lt;code class=&quot;highlighter-rouge&quot;&gt;disqus&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;duoshuo&lt;/code&gt;已不能使用，&lt;code class=&quot;highlighter-rouge&quot;&gt;disqus&lt;/code&gt;很早就被墙了，所以都不能使用，在这里推荐大家使用&lt;code class=&quot;highlighter-rouge&quot;&gt;gitment&lt;/code&gt;，从网上可以搜到很多的教程来使用&lt;code class=&quot;highlighter-rouge&quot;&gt;gitment&lt;/code&gt;搭建评论系统。&lt;br /&gt;
+另外在对第一次使用模板的时候可以会因为一些配置文件版本问题不匹配，所以需要自己根据实际情况去解决，不过遇到这些文件不匹配的时候可以试着自己使用&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle install xxxxx&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install xxxxxx&lt;/code&gt;去安装对应的文件，如果实在安装不了，可以试着从其他地方找到对应版本号的文件粘贴进去，最后实在不行那就安装一个匹配的jekyll，我想这是遇到自己觉得解决不了的问题的时候最简单的方法。&lt;/p&gt;
 
 &lt;h2 id=&quot;后记&quot;&gt;后记&lt;/h2&gt;
 &lt;p&gt;当第一次使用&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll+github pages&lt;/code&gt;来搭建博客的时候，不知道自己要做什么，就在Google查相关的信息，这样的信息还是不少的，所以在这里感谢那些在网上贡献自己知识的人。我不知道自己多少次安了卸，卸了安，安装的过程中自己根据终端的错误信息，以及网上的教程，就知道什么样的错误该怎么解决，所以呢，如果对这方面不是有些了解的话，你一次就安装成功之后可以卸载，然后自己再按着这样的方式再去安装，安装的时候可以更换ruby的版本，我想你会有不同的体验的。安装的教程也可以参考 &lt;a href=&quot;http://jekyllcn.com/&quot;&gt;jekyll官网&lt;/a&gt;，里面有更加详细的信息。&lt;/p&gt;
