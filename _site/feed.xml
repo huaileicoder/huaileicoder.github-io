@@ -5,9 +5,79 @@
     <description>Trust The Process</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 03 Sep 2018 23:43:45 +0800</pubDate>
-    <lastBuildDate>Mon, 03 Sep 2018 23:43:45 +0800</lastBuildDate>
+    <pubDate>Sun, 16 Sep 2018 22:39:47 +0800</pubDate>
+    <lastBuildDate>Sun, 16 Sep 2018 22:39:47 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
+    
+      <item>
+        <title>Linux命令：top</title>
+        <description>&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;温暖(live) –tiger&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;常用参数&quot;&gt;常用参数&lt;/h2&gt;
+&lt;p&gt;Linux中&lt;code class=&quot;highlighter-rouge&quot;&gt;top&lt;/code&gt;命令用于&lt;code class=&quot;highlighter-rouge&quot;&gt;实时显示process的动态&lt;/code&gt;。&lt;br /&gt;
+top命令有一些常用的参数：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;-d&lt;/strong&gt;: 改变显示的更新速度，或是在交谈式指令列按&lt;code class=&quot;highlighter-rouge&quot;&gt;s&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;-q&lt;/strong&gt;: 没有任何延时的显示速度，如果使用是以&lt;code class=&quot;highlighter-rouge&quot;&gt;superuser&lt;/code&gt;的权限执行，则top以最高的优先序执行。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;-c&lt;/strong&gt;: 显示完成的&lt;code class=&quot;highlighter-rouge&quot;&gt;command&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;-n&lt;/strong&gt;: 更新的次数，完成之后将会退出top。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;-p 139&lt;/strong&gt;: 显示进程Id为139的进程信息，CPU，内存占用率等。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;输出信息介绍&quot;&gt;输出信息介绍&lt;/h2&gt;
+&lt;p&gt;！&lt;a href=&quot;/img/in-post/post-linux/post-top-1.png&quot;&gt;top命令输出信息&lt;/a&gt;&lt;br /&gt;
+我们从图片中可以看到这些信息，首先第一行，当前时间，系统运行时间，当前登录用户，最后一项是系统负载，三个数值分别是1分钟，5分钟，15分钟到现在的平均值。第二行，任务的总数，zombie是僵尸进程数。第三行，&lt;code class=&quot;highlighter-rouge&quot;&gt;0.6%us&lt;/code&gt;:用户空间占用CPU百分比，&lt;code class=&quot;highlighter-rouge&quot;&gt;0.3%sy&lt;/code&gt;:内核空间占用CPU百分比，&lt;code class=&quot;highlighter-rouge&quot;&gt;0.1%ni&lt;/code&gt;:用户进程空间内改变过优先级的进程占用CPU百分比，&lt;code class=&quot;highlighter-rouge&quot;&gt;98.9%id&lt;/code&gt;:空闲CPU百分比，&lt;code class=&quot;highlighter-rouge&quot;&gt;0.0%wa&lt;/code&gt;:等待输入输出的CPU时间百分比，&lt;code class=&quot;highlighter-rouge&quot;&gt;0.0%hi&lt;/code&gt;: Hardware IRQ，&lt;code class=&quot;highlighter-rouge&quot;&gt;0.0%si&lt;/code&gt;: Software IRQ。另外，IRQ: IRQ全称为Interrupt Request，即是“中断请求”的意思。st(Steal Time): stole time 的缩写，该项指标只对虚拟机有效，表示分配给当前虚拟机的CPU 时间之中，被同一台物理机上的其他虚拟机偷走的时间百分比。&lt;br /&gt;
+后面两行根据名字就能看出相应的意思，这里介绍一下&lt;code class=&quot;highlighter-rouge&quot;&gt;buffer&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;cache&lt;/code&gt;的区别:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;可用内存 = 系统&lt;code class=&quot;highlighter-rouge&quot;&gt;free memory + buffers + cached&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;buffers&lt;/code&gt;是指用来给块设备做的缓冲大小，他只记录文件系统的&lt;code class=&quot;highlighter-rouge&quot;&gt;metadata&lt;/code&gt;以及&lt;code class=&quot;highlighter-rouge&quot;&gt;tracking in-flight pages&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cached&lt;/code&gt;是用来给文件做缓冲
+那就是说：&lt;code class=&quot;highlighter-rouge&quot;&gt;buffers&lt;/code&gt;是用来存储，目录里面有什么内容，权限等等。而&lt;code class=&quot;highlighter-rouge&quot;&gt;cached&lt;/code&gt;直接用来存储我们打开的文件。&lt;br /&gt;
+&lt;img src=&quot;/img/in-post/post-linux/post-top-2.png&quot; alt=&quot;top命令输出信息&quot; /&gt;&lt;br /&gt;
+这些字段的意思我们可以从下面两张图中了解：
+&lt;img src=&quot;/img/in-post/post-linux/post-top-3.png&quot; alt=&quot;top命令输出信息&quot; /&gt;
+&lt;img src=&quot;/img/in-post/post-linux/post-top-4.png&quot; alt=&quot;top命令输出信息&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;f &lt;/code&gt;键可以选择显示的内容。按&lt;code class=&quot;highlighter-rouge&quot;&gt;f&lt;/code&gt;键之后会显示列的列表，按&lt;code class=&quot;highlighter-rouge&quot;&gt;a-z&lt;/code&gt;即可显示或隐藏对应的列，最后按回车键确定。&lt;/li&gt;
+  &lt;li&gt;按&lt;code class=&quot;highlighter-rouge&quot;&gt;o&lt;/code&gt;键可以改变列的显示顺序。按小写的&lt;code class=&quot;highlighter-rouge&quot;&gt;a-z&lt;/code&gt;可以将相应的列向右移动，而大写的&lt;code class=&quot;highlighter-rouge&quot;&gt;A-Z&lt;/code&gt;可以将相应的列向左移动，最后按回车键确定。&lt;/li&gt;
+  &lt;li&gt;按大写的&lt;code class=&quot;highlighter-rouge&quot;&gt;F&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;O&lt;/code&gt;键，然后按&lt;code class=&quot;highlighter-rouge&quot;&gt;a-z&lt;/code&gt;可以将进程按照相应的列进行排序。而大写的&lt;code class=&quot;highlighter-rouge&quot;&gt;R&lt;/code&gt;键可以将当前的排序倒转。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;常用交互命令&quot;&gt;常用交互命令&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Ctrl+L&lt;/strong&gt;: 擦除并且重写屏幕。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;h&lt;/strong&gt;或者&lt;strong&gt;?&lt;/strong&gt;: 显示帮助画面，给出一些简短的命令总结说明。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;k&lt;/strong&gt;： 终止一个进程。系统将提示用户输入需要终止的进程PID，以及需要发送给该进程什么样的信号。一般的终止进程可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;15信号&lt;/code&gt;；如果不能正常结束那就使用&lt;code class=&quot;highlighter-rouge&quot;&gt;信号9&lt;/code&gt;强制结束该进程。默认值是&lt;code class=&quot;highlighter-rouge&quot;&gt;信号15&lt;/code&gt;。在安全模式中此命令被屏蔽。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;i&lt;/strong&gt;： 忽略闲置和僵死进程。这是一个开关式命令。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;q&lt;/strong&gt;： 退出程序。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;r&lt;/strong&gt;： 重新安排一个进程的优先级别。系统提示用户输入需要改变的进程PID以及需要设置的进程优先级值。输入一个正值将使优先级降低，反之则可以使该进程拥有更高的优先权。默认值是&lt;code class=&quot;highlighter-rouge&quot;&gt;10&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;S&lt;/strong&gt;： 切换到累计模式。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;s&lt;/strong&gt;： 改变两次刷新之间的延迟时间。系统将提示用户输入新的时间，单位为&lt;code class=&quot;highlighter-rouge&quot;&gt;s&lt;/code&gt;。如果有小数，就换算成&lt;code class=&quot;highlighter-rouge&quot;&gt;ms&lt;/code&gt;。输入&lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;值则系统将不断刷新，默认值是`5s。需要注意的是如果设置太小的时间，很可能会引起不断刷新，从而根本来不及看清显示的情况，而且系统负载也会大大增加。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;f&lt;/strong&gt;或者&lt;strong&gt;F&lt;/strong&gt;： 从当前显示中添加或者删除项目。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;o&lt;/strong&gt;或者&lt;strong&gt;O&lt;/strong&gt;： 改变显示项目的顺序。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;l&lt;/strong&gt;： 切换显示&lt;code class=&quot;highlighter-rouge&quot;&gt;平均负载&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;启动时间信息&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;m&lt;/strong&gt;： 切换显示&lt;code class=&quot;highlighter-rouge&quot;&gt;内存&lt;/code&gt;信息。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;t&lt;/strong&gt;： 切换显示&lt;code class=&quot;highlighter-rouge&quot;&gt;进程&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;CPU&lt;/code&gt;状态信息。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;c&lt;/strong&gt;： 切换显示&lt;code class=&quot;highlighter-rouge&quot;&gt;命令名称&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;完整命令行&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;M&lt;/strong&gt;： 根据驻留内存大小进行排序。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;P&lt;/strong&gt;： 根据CPU使用百分比大小进行排序。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;T&lt;/strong&gt;： 根据时间/累计时间进行排序。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;W&lt;/strong&gt;： 将当前设置写入&lt;code class=&quot;highlighter-rouge&quot;&gt;~/.toprc&lt;/code&gt;文件中。这是写top配置文件的推荐方法。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 15 Sep 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top/</guid>
+        
+        <category>-Linux</category>
+        
+        
+      </item>
     
       <item>
         <title>使用jekyll+github pages 搭建个人博客</title>
