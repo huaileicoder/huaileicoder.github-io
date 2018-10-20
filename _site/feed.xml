@@ -5,9 +5,22 @@
     <description>Trust The Process</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 03 Sep 2018 23:43:45 +0800</pubDate>
-    <lastBuildDate>Mon, 03 Sep 2018 23:43:45 +0800</lastBuildDate>
+    <pubDate>Sat, 20 Oct 2018 18:11:04 +0800</pubDate>
+    <lastBuildDate>Sat, 20 Oct 2018 18:11:04 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
+    
+      <item>
+        <title>Linux命令：top</title>
+        <description>&lt;p&gt;##&lt;/p&gt;
+</description>
+        <pubDate>Sat, 15 Sep 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top/</guid>
+        
+        <category>-Linux</category>
+        
+        
+      </item>
     
       <item>
         <title>使用jekyll+github pages 搭建个人博客</title>
@@ -73,48 +86,6 @@ ruby 2.5.1p57 (2018-03-29 revision 63029) [x64-mingw32]
         <category>-jekyll</category>
         
         <category>-githubpages</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>huailei first blog</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;“Yeah It’s on. ”&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;正文&quot;&gt;正文&lt;/h2&gt;
-&lt;p&gt;搭建jekyll之后使用模板写的一篇测试博客&lt;/p&gt;
-
-&lt;p&gt;因为自己的惰性，这个博客从开始搭建到现在已经两个星期了，很遗憾今天才开始测试   &lt;br /&gt;
-  那现在开始吧&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/huaileicoder&quot;&gt;我的GitHub&lt;/a&gt;  &lt;a href=&quot;https://github.com/huaileicoder/&quot;&gt;https://github.com/huaileicoder/&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;其他&quot;&gt;其他&lt;/h2&gt;
-&lt;p&gt;这是一篇学习markdown的测试文章，所以就有一下几点&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;文字&lt;strong&gt;加粗&lt;/strong&gt;，&lt;em&gt;斜体&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;插入图片&lt;/li&gt;
-  &lt;li&gt;代码&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/post-bg-2015.jpg&quot; alt=&quot;测试图片&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;接下来测试插入代码&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class HelloWorld {
-    public static void main(String[] args) {
-	    System.out.println(&quot;HelloWorld&quot;);
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;然后这里是&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install jekyll&lt;/code&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sat, 11 Aug 2018 17:53:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/08/11/myfirstBlog-2018/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/08/11/myfirstBlog-2018/</guid>
-        
-        <category>-Life</category>
         
         
       </item>
