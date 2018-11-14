@@ -6,10 +6,8 @@ date:       2018-09-15
 author:     "huailei"
 header-img: "img/post-bg-linux-order.jpg"
 tags:
-    -Linux
-    
+    -Linux    
 ---
-
 > 温暖(live) --tiger
 
 ## 常用参数

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Trust The Process">
+    <meta name="keywords"  content="Trust The Process">
+    <meta name="theme-color" content="#000000">
+    
+    <title>Linux命令：top - 怀雷 | huailei Blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">huailei blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-linux-order.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-linux-order.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#-Linux" title="-Linux">-Linux</a>
+                        
+                    </div>
+                    <h1>Linux命令：top</h1>
+                    
+                    
+                    <h2 class="subheading"> </h2>
+                    
+                    <span class="meta">Posted by huailei on September 15, 2018</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<blockquote>
+  <p>温暖(live) –tiger</p>
+</blockquote>
+
+<h2 id="常用参数">常用参数</h2>
+<p>Linux中<code class="highlighter-rouge">top</code>命令用于<code class="highlighter-rouge">实时显示process的动态</code>。<br />
+top命令有一些常用的参数：</p>
+<ul>
+  <li><strong>-d</strong>: 改变显示的更新速度，或是在交谈式指令列按<code class="highlighter-rouge">s</code>。</li>
+  <li><strong>-q</strong>: 没有任何延时的显示速度，如果使用是以<code class="highlighter-rouge">superuser</code>的权限执行，则top以最高的优先序执行。</li>
+  <li><strong>-c</strong>: 显示完成的<code class="highlighter-rouge">command</code>。</li>
+  <li><strong>-n</strong>: 更新的次数，完成之后将会退出top。</li>
+  <li><strong>-p 139</strong>: 显示进程Id为139的进程信息，CPU，内存占用率等。</li>
+</ul>
+
+<h2 id="输出信息介绍">输出信息介绍</h2>
+<p><img src="/img/in-post/post-linux/post-top-1.png" alt="top命令输出信息" /><br />
+我们从图片中可以看到这些信息，首先第一行，当前时间，系统运行时间，当前登录用户，最后一项是系统负载，三个数值分别是1分钟，5分钟，15分钟到现在的平均值。第二行，任务的总数，zombie是僵尸进程数。第三行，<code class="highlighter-rouge">0.6%us</code>: 用户空间占用CPU百分比，<code class="highlighter-rouge">0.3%sy</code>: 内核空间占用CPU百分比，<code class="highlighter-rouge">0.1%ni</code>: 用户进程空间内改变过优先级的进程占用CPU百分比，<code class="highlighter-rouge">98.9%id</code>: 空闲CPU百分比，<code class="highlighter-rouge">0.0%wa</code>: 等待输入输出的CPU时间百分比，<code class="highlighter-rouge">0.0%hi</code>: Hardware IRQ，<code class="highlighter-rouge">0.0%si</code>: Software IRQ。另外，IRQ: IRQ全称为Interrupt Request，即是“中断请求”的意思。st(Steal Time): stole time 的缩写，该项指标只对虚拟机有效，表示分配给当前虚拟机的CPU 时间之中，被同一台物理机上的其他虚拟机偷走的时间百分比。<br />
+后面两行根据名字就能看出相应的意思，这里介绍一下<code class="highlighter-rouge">buffer</code>和<code class="highlighter-rouge">cache</code>的区别:</p>
+<ul>
+  <li>可用内存 = 系统<code class="highlighter-rouge">free memory + buffers + cached</code>。</li>
+  <li><code class="highlighter-rouge">buffers</code>是指用来给块设备做的缓冲大小，他只记录文件系统的<code class="highlighter-rouge">metadata</code>以及<code class="highlighter-rouge">tracking in-flight pages</code>。</li>
+  <li><code class="highlighter-rouge">cached</code>是用来给文件做缓冲</li>
+</ul>
+
+<p>那就是说：<code class="highlighter-rouge">buffers</code>是用来存储，目录里面有什么内容，权限等等。而<code class="highlighter-rouge">cached</code>直接用来存储我们打开的文件。<br />
+<img src="/img/in-post/post-linux/post-top-2.png" alt="top命令输出信息" /><br />
+这些字段的意思我们可以从下面两张图中了解：
+<img src="/img/in-post/post-linux/post-top-3.png" alt="top命令输出信息" />
+<img src="/img/in-post/post-linux/post-top-4.png" alt="top命令输出信息" /></p>
+<ul>
+  <li>通过 <code class="highlighter-rouge">f </code>键可以选择显示的内容。按<code class="highlighter-rouge">f</code>键之后会显示列的列表，按<code class="highlighter-rouge">a-z</code>即可显示或隐藏对应的列，最后按回车键确定。</li>
+  <li>按<code class="highlighter-rouge">o</code>键可以改变列的显示顺序。按小写的<code class="highlighter-rouge">a-z</code>可以将相应的列向右移动，而大写的<code class="highlighter-rouge">A-Z</code>可以将相应的列向左移动，最后按回车键确定。</li>
+  <li>按大写的<code class="highlighter-rouge">F</code>或<code class="highlighter-rouge">O</code>键，然后按<code class="highlighter-rouge">a-z</code>可以将进程按照相应的列进行排序。而大写的<code class="highlighter-rouge">R</code>键可以将当前的排序倒转。</li>
+</ul>
+
+<h2 id="常用交互命令">常用交互命令</h2>
+<ul>
+  <li><strong>Ctrl+L</strong>: 擦除并且重写屏幕。</li>
+  <li><strong>h</strong>或者<strong>?</strong>: 显示帮助画面，给出一些简短的命令总结说明。</li>
+  <li><strong>k</strong>： 终止一个进程。系统将提示用户输入需要终止的进程PID，以及需要发送给该进程什么样的信号。一般的终止进程可以使用<code class="highlighter-rouge">15信号</code>；如果不能正常结束那就使用<code class="highlighter-rouge">信号9</code>强制结束该进程。默认值是<code class="highlighter-rouge">信号15</code>。在安全模式中此命令被屏蔽。</li>
+  <li><strong>i</strong>： 忽略闲置和僵死进程。这是一个开关式命令。</li>
+  <li><strong>q</strong>： 退出程序。</li>
+  <li><strong>r</strong>： 重新安排一个进程的优先级别。系统提示用户输入需要改变的进程PID以及需要设置的进程优先级值。输入一个正值将使优先级降低，反之则可以使该进程拥有更高的优先权。默认值是<code class="highlighter-rouge">10</code>。</li>
+  <li><strong>S</strong>： 切换到累计模式。</li>
+  <li><strong>s</strong>： 改变两次刷新之间的延迟时间。系统将提示用户输入新的时间，单位为<code class="highlighter-rouge">s</code>。如果有小数，就换算成<code class="highlighter-rouge">ms</code>。输入<code class="highlighter-rouge">0</code>值则系统将不断刷新，默认值是<code class="highlighter-rouge">5s</code>。需要注意的是如果设置太小的时间，很可能会引起不断刷新，从而根本来不及看清显示的情况，而且系统负载也会大大增加。</li>
+  <li><strong>f</strong>或者<strong>F</strong>： 从当前显示中添加或者删除项目。</li>
+  <li><strong>o</strong>或者<strong>O</strong>： 改变显示项目的顺序。</li>
+  <li><strong>l</strong>： 切换显示<code class="highlighter-rouge">平均负载</code>和<code class="highlighter-rouge">启动时间信息</code>。</li>
+  <li><strong>m</strong>： 切换显示<code class="highlighter-rouge">内存</code>信息。</li>
+  <li><strong>t</strong>： 切换显示<code class="highlighter-rouge">进程</code>和<code class="highlighter-rouge">CPU</code>状态信息。</li>
+  <li><strong>c</strong>： 切换显示<code class="highlighter-rouge">命令名称</code>和<code class="highlighter-rouge">完整命令行</code>。</li>
+  <li><strong>M</strong>： 根据驻留内存大小进行排序。</li>
+  <li><strong>P</strong>： 根据CPU使用百分比大小进行排序。</li>
+  <li><strong>T</strong>： 根据时间/累计时间进行排序。</li>
+  <li><strong>W</strong>： 将当前设置写入<code class="highlighter-rouge">~/.toprc</code>文件中。这是写top配置文件的推荐方法。</li>
+</ul>
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2018/09/01/%E4%BD%BF%E7%94%A8jekyll+github-pages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" data-toggle="tooltip" data-placement="top" title="使用jekyll+github pages 搭建个人博客">
+                        Previous<br>
+                        <span>使用jekyll+github pages 搭建个人博客</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2018/11/14/2018-11-10-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" data-toggle="tooltip" data-placement="top" title="">
+                        Next<br>
+                        <span></span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                </ul>
+                
+            </div>
+        </div>
+		<div id="gitmentContainer"></div>
+		<link rel="stylesheet" href="/css/gitment.css" />
+		<script src="/js/gitment.js"></script>
+    </div>
+</article>
+
+<script>
+	var gitment = new Gitment({
+		owner: 'huaileicoder',
+		repo: 'huaileicoder.github.io',
+		oauth: {
+			client_id: '397e0b72052c93816d18',
+			client_secret: '666a12fc008ea8e25c1992f8e810c3d485073e7a',
+		},
+	});
+	gitment.render('gitmentContainer');
+</script>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/huai-lei-18">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/huaileicoder">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; huailei blog 2018
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-124573520-1';
+    var _gaDomain = 'auto';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'a4f7e46b75646ed0826065e1712928a8';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+<!-- Side Catalog -->
+
+
+
+<!-- Multi-Lingual -->
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
