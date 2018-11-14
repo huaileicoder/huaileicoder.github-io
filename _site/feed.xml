@@ -5,12 +5,12 @@
     <description>Trust The Process</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 14 Nov 2018 20:40:58 +0800</pubDate>
-    <lastBuildDate>Wed, 14 Nov 2018 20:40:58 +0800</lastBuildDate>
+    <pubDate>Wed, 14 Nov 2018 20:59:17 +0800</pubDate>
+    <lastBuildDate>Wed, 14 Nov 2018 20:59:17 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
-        <title></title>
+        <title>工厂模式</title>
         <description>&lt;blockquote&gt;
   &lt;p&gt;九月(live)–旦增&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -123,7 +123,7 @@
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;！&lt;a href=&quot;/img/in-post/post-designPattern/post-designPattern-factoryPattern-1.png&quot;&gt;factory method&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/in-post/post-designPattern/post-designPattern-factoryPattern-1.png&quot; alt=&quot;factory method&quot; /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;工厂方法模式能够封装具体类型的实例化。抽象的Creator提供了一个创建对象的方法的接口，称为“工厂方法”。在抽象的Creator中，任何其他实现的方法，都可能使用到这个工厂方法所制造出来的产品，但只有子类真正实现这个工厂方法创建产品。
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -133,9 +133,11 @@
 &lt;h2 id=&quot;抽象工厂&quot;&gt;抽象工厂&lt;/h2&gt;
 
 </description>
-        <pubDate>Wed, 14 Nov 2018 20:40:58 +0800</pubDate>
-        <link>http://localhost:4000/2018/11/14/2018-11-10-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/11/14/2018-11-10-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
+        <pubDate>Sat, 10 Nov 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/11/10/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/11/10/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
+        
+        <category>-designPattern</category>
         
         
       </item>
