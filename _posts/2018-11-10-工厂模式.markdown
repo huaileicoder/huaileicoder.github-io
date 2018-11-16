@@ -60,7 +60,7 @@ public class SimpleCarFactory {
 }
 ```
 
-虽然把生成汽车的代码抽了出来但是增加或者减少汽车的品牌仍然需要修改这段代码，但与之带来的好处是这个factory可以为不止一家4s店服务。当以后实现改变时，只要改变这个类就行了。
+虽然把生成汽车的代码抽了出来但是增加或者减少汽车的品牌仍然需要修改这段代码，但与之带来的好处是这个factory可以为多家4s店服务。当以后实现改变时，只要改变这个类就行了。
 
 重组后的4s店是这样的：
 
@@ -137,4 +137,143 @@ public class BenzFactory extends CarFacatory {
 这里每一个具体的工厂的实现都像是SimpleFactory，区别在于这里的具体工厂是扩展自一个类，这个类有一个抽象的方法createCar()。由每个工厂自己来负责createCar()中的行为。另外简单工厂不具有工厂方法的弹性，简单工厂不能变更正在创建的产品，简单工厂添加删除类型需要修改那段代码，而工厂方法不需要。
 
 ## 抽象工厂
+
+在认识抽象工厂模式之前，我们先来认识一下依赖倒置原则：
+
+```
+依赖倒置原则(Dependency Inversion Principle)：要依赖抽象，不要依赖具体类
+```
+
+这个原则说明了：不能让高层组件依赖底层组件，不管高层或底层组件，“两者”都应该依赖于抽象。
+
+避免在OO设计中违反依赖倒置原则
+
+* 变量不可以持有具体类的引用
+* 不要让类派生自具体类
+* 不要覆盖基类中已实现的方法
+
+我们来认识一下抽象工厂模式：
+
+```
+抽象工厂模式 ： 提供一个接口，用于创建相关或依赖对象的家族，而不需要明确指定具体类。
+```
+
+抽象工厂模式是为产品家族提供接口。家族在这里就是发动机、喇叭、车轮等。通过抽象工厂提供的接口，可以创建产品的家族，利用这个接口书写代码，我们的代码将从实际工厂解耦，以便实现不同的工厂，制造出各种不同的产品。奔驰、宝马、江淮汽车的各个零件都是不一样的，在这里我们可以分别的生产不同的零件。
+
+首先我们先来建一个零件工厂：
+
+```java
+public interface CarComponentsFatory {
+    public Engine createEngine();
+    public Tire createTire();
+    public Horn createHorn();
+}
+```
+
+接下来先来实现奔驰零件工厂，Benz用到的零件都是比较好的：
+
+```java
+public class BenzCarComponentsFatory {
+    public Engine createEngine() {
+        return new HighEngine();
+    }
+    
+    public Tire createTire() {
+        return new HighTire();
+    }
+    
+    public Horn createHorn() {
+        return new HighHorn();
+    }
+}
+```
+
+而江淮的车使用到的零件就比较差了：
+
+```java
+public class JHCarComponentsFactory {
+    public Engine createEngine() {
+        return new LowEngine();
+    }
+    
+    public Tire createTire() {
+        return new LowTire();
+    }
+    
+    public Horn createHorn() {
+        return new LowHorn();
+    }
+}
+```
+
+零件工厂已经准备好了，我们重新开始生产汽车，先从抽象的Car类开始：
+
+```java
+public abstract class Car {
+    String name;
+    Engine engine;
+    Tire tire;
+    Horn horn;
+    
+    abstract void execute();
+    
+    void setName(String name) {
+        this.name = name;
+    }
+    
+    String getName() {
+        return name;
+    }
+    
+    public String toString {
+        ......
+    }
+}
+```
+
+现在已经有了一个抽象的汽车类了，现在开始创建奔驰和江淮的汽车了。
+
+```java
+public class BenzCar extends Car {
+    private CarComponentsFatory carComponentsFactory;
+    
+    public BenzCar(CarComponentsFactory carComponentsFactory) {
+        this.carComponentsFactory = carComponentsFactory;
+    }
+    
+    void execute() {
+        engine = carComponentsFactory.createEngine();
+        tire = carComponentsFactory.createTire();
+        horn = carComponentsFactory.createHorn();
+    }
+}
+```
+
+同样创建江淮汽车也是如此，并且可以在这基础上有自己的修改。
+
+好了，现在我们去4s店购买汽车：
+
+```java
+public class BenzStore extends CarStore {
+    public Car createCar(String item) {
+        Car car = null;
+        CarComponentsFatory componentsFactory = new BenzCarComponentsFatory();
+        
+        if (item.equals("benz")) {
+            car = new BenzCar(componentsFactory);
+        }
+        return car;
+    }
+}
+```
+
+在这里我们创建BenzCar然后让它与Benz零件工厂绑定在一起，之后就可以调用execute()方法让工厂去生产零件。可以看到在这里我们甚至可以使用JH零件工厂来给Benz生产零件，但是呢还会被投诉的。
+
+现在你可以对比一下工厂方法和抽象工厂，其实抽象工厂的每个方法实际上都是使用工厂方法来实现的。比如createEngine()等，每个方法都被声明为抽象，而子类的方法覆盖这些对象来创建某些对象。
+
+但是另外，工厂方法创建对象用的方法是继承，利用工厂方法创建对象需要扩展一个类，而抽象工厂是通过对象的组合。工厂方法模式和抽象方法模式比较搞混，在使用中工厂方法是用来创建一个产品。而抽象工厂是可以被用来创建整个产品家族的，但是如果加入新产品就必须改变接口。
+
+## 后记
+
+三种工厂模式各有各的用处，简单工厂用于简单的创建一个产品，工厂模式在简单工厂的基础上可以增加产品类型，抽象工厂用于创建整个产品家族的，可以根据具体的情况使用对应的工厂模式。
 

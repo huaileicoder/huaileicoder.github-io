@@ -1,7 +1,7 @@
 # Site settings
 title: huailei blog
 SEOTitle: 怀雷 | huailei Blog
-header-img: img/home-bg-sun.jpg
+header-img: img/home-bg-o.jpg
 email: huailei2017@gmail.com
 description: "Trust The Process"
 keyword: "Trust The Process"
@@ -15,7 +15,7 @@ future: true
 RSS: false
 zhihu_username:     huai-lei-18
 github_username:    huaileicoder
-twitter_username:  
+twitter_username:  	
 #facebook_username:  huaileicoder
 
 
