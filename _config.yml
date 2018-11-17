@@ -15,15 +15,15 @@ future: true
 RSS: false
 zhihu_username:     huai-lei-18
 github_username:    huaileicoder
-twitter_username:  	
-#facebook_username:  huaileicoder
+twitter_username:  	KobeKawhli
+#facebook_username:  brant.kobe.902
 
 
 
 # Build settings
 # from 2016, 'pygments' is unsupported on GitHub Pages. Use 'rouge' for highlighting instead.
 highlighter: rouge
-permalink: pretty
+permalink: /:year/:month/:day/:title.html
 paginate: 10
 exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
 anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
@@ -43,18 +43,6 @@ gems: [jekyll-paginate]
 markdown: kramdown
 kramdown:
   input: GFM                            # use Github Flavored Markdown !important
-
-
-
-# Disqus settings
-#disqus_username: _your_disqus_short_name_
-
-# Duoshuo settings
-#duoshuo_username: 
-# Share component is depend on Comment so we can NOT use share only.
-#duoshuo_share: false                     # set to false if you want to use Comment without Sharing
-
-
 
 
 # Analytics settings
