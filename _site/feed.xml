@@ -5,8 +5,8 @@
     <description>Trust The Process</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Nov 2018 12:28:59 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Nov 2018 12:28:59 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Nov 2018 15:32:58 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Nov 2018 15:32:58 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
@@ -296,8 +296,8 @@
 
 </description>
         <pubDate>Sat, 10 Nov 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/11/10/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/11/10/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F.html</guid>
+        <link>http://localhost:4000/2018/11/10/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/11/10/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F</guid>
         
         <category>-designPattern</category>
         
@@ -365,8 +365,8 @@ top命令有一些常用的参数：&lt;/p&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Sat, 15 Sep 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top.html</guid>
+        <link>http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top</guid>
         
         <category>-Linux</category>
         
@@ -431,8 +431,8 @@ ruby 2.5.1p57 (2018-03-29 revision 63029) [x64-mingw32]
 &lt;p&gt;当第一次使用&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll+github pages&lt;/code&gt;来搭建博客的时候，不知道自己要做什么，就在Google查相关的信息，这样的信息还是不少的，所以在这里感谢那些在网上贡献自己知识的人。我不知道自己多少次安了卸，卸了安，安装的过程中自己根据终端的错误信息，以及网上的教程，就知道什么样的错误该怎么解决，所以呢，如果对这方面不是有些了解的话，你一次就安装成功之后可以卸载，然后自己再按着这样的方式再去安装，安装的时候可以更换ruby的版本，我想你会有不同的体验的。安装的教程也可以参考 &lt;a href=&quot;http://jekyllcn.com/&quot;&gt;jekyll官网&lt;/a&gt;，里面有更加详细的信息。&lt;/p&gt;
 </description>
         <pubDate>Sat, 01 Sep 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/09/01/%E4%BD%BF%E7%94%A8jekyll+github-pages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/09/01/%E4%BD%BF%E7%94%A8jekyll+github-pages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</guid>
+        <link>http://localhost:4000/2018/09/01/%E4%BD%BF%E7%94%A8jekyll+github-pages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/09/01/%E4%BD%BF%E7%94%A8jekyll+github-pages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2</guid>
         
         <category>-jekyll</category>
         
