@@ -6,7 +6,7 @@ date:       2018-11-21
 author:     "huailei"
 header-img: "img/contact-bg.jpg"
 tags:
-    -designPattern
+    -tools
 ---
 
 ### 一般操作
