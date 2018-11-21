@@ -5,9 +5,205 @@
     <description>Trust The Process</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Nov 2018 15:42:55 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Nov 2018 15:42:55 +0800</lastBuildDate>
+    <pubDate>Wed, 21 Nov 2018 12:21:20 +0800</pubDate>
+    <lastBuildDate>Wed, 21 Nov 2018 12:21:20 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
+    
+      <item>
+        <title>Sublime 快捷键</title>
+        <description>&lt;h3 id=&quot;一般操作&quot;&gt;一般操作&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;快捷键&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + Shift + P&lt;/td&gt;
+      &lt;td&gt;打开命令框&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + K + B&lt;/td&gt;
+      &lt;td&gt;打开侧边栏&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;搜索&quot;&gt;搜索&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;快捷键&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + F&lt;/td&gt;
+      &lt;td&gt;打开底部的搜索框&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + H&lt;/td&gt;
+      &lt;td&gt;代替&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + Shift + F&lt;/td&gt;
+      &lt;td&gt;按照文件夹进行搜索&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + P&lt;/td&gt;
+      &lt;td&gt;搜索当前workspace的文件&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + R&lt;/td&gt;
+      &lt;td&gt;打开搜索框，自动代入@；前往符号，函数名称等&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + ;&lt;/td&gt;
+      &lt;td&gt;打开搜索框，自动代入#；前往名称、属性等&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + G&lt;/td&gt;
+      &lt;td&gt;打开搜索框，自动代入: 前往当前文件某行&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;编辑操作&quot;&gt;编辑操作&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;快捷键&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + Enter&lt;/td&gt;
+      &lt;td&gt;在下一行插入新行&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + Shift + Enter&lt;/td&gt;
+      &lt;td&gt;在上一行插入新行&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + Shift + ↑&lt;/td&gt;
+      &lt;td&gt;将所在行和上一行互换&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + Shift + ↓&lt;/td&gt;
+      &lt;td&gt;将所在行和下一行互换&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + D&lt;/td&gt;
+      &lt;td&gt;选取词，继续操作则会继续选取相同词的文字&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + ]&lt;/td&gt;
+      &lt;td&gt;向右对齐&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + [&lt;/td&gt;
+      &lt;td&gt;向左对齐&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + /&lt;/td&gt;
+      &lt;td&gt;注解单行&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + Shift + /&lt;/td&gt;
+      &lt;td&gt;注解多行&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + Z&lt;/td&gt;
+      &lt;td&gt;撤销&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;分页操作&quot;&gt;分页操作&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;快捷键&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + Shift + T&lt;/td&gt;
+      &lt;td&gt;开启最后关闭的页面&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + PgUp&lt;/td&gt;
+      &lt;td&gt;向左切换页面&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + PgDown&lt;/td&gt;
+      &lt;td&gt;向右切换页面&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ctrl + Tab&lt;/td&gt;
+      &lt;td&gt;按照分页浏览过的顺序切换页面&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;分屏操作&quot;&gt;分屏操作&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;快捷键&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Alt + Shift + 1&lt;/td&gt;
+      &lt;td&gt;Single&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Alt + Shift + 2&lt;/td&gt;
+      &lt;td&gt;Columns:2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Alt + Shift + 3&lt;/td&gt;
+      &lt;td&gt;Columns:3&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Alt + Shift + 4&lt;/td&gt;
+      &lt;td&gt;Columns:4&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Alt + Shift + 5&lt;/td&gt;
+      &lt;td&gt;Gird 四方格&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Alt + Shift + 8&lt;/td&gt;
+      &lt;td&gt;Row：2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Alt + Shift + 9&lt;/td&gt;
+      &lt;td&gt;Row：3&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+</description>
+        <pubDate>Wed, 21 Nov 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/11/21/sublime_hotKey.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/11/21/sublime_hotKey.html</guid>
+        
+        <category>-designPattern</category>
+        
+        
+      </item>
     
       <item>
         <title>工厂模式</title>
@@ -296,8 +492,8 @@
 
 </description>
         <pubDate>Sat, 10 Nov 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/11/10/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/11/10/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F</guid>
+        <link>http://localhost:4000/2018/11/10/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/11/10/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F.html</guid>
         
         <category>-designPattern</category>
         
@@ -365,8 +561,8 @@ top命令有一些常用的参数：&lt;/p&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Sat, 15 Sep 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top</guid>
+        <link>http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top.html</guid>
         
         <category>-Linux</category>
         
@@ -431,8 +627,8 @@ ruby 2.5.1p57 (2018-03-29 revision 63029) [x64-mingw32]
 &lt;p&gt;当第一次使用&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll+github pages&lt;/code&gt;来搭建博客的时候，不知道自己要做什么，就在Google查相关的信息，这样的信息还是不少的，所以在这里感谢那些在网上贡献自己知识的人。我不知道自己多少次安了卸，卸了安，安装的过程中自己根据终端的错误信息，以及网上的教程，就知道什么样的错误该怎么解决，所以呢，如果对这方面不是有些了解的话，你一次就安装成功之后可以卸载，然后自己再按着这样的方式再去安装，安装的时候可以更换ruby的版本，我想你会有不同的体验的。安装的教程也可以参考 &lt;a href=&quot;http://jekyllcn.com/&quot;&gt;jekyll官网&lt;/a&gt;，里面有更加详细的信息。&lt;/p&gt;
 </description>
         <pubDate>Sat, 01 Sep 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/09/01/%E4%BD%BF%E7%94%A8jekyll+github-pages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/09/01/%E4%BD%BF%E7%94%A8jekyll+github-pages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2</guid>
+        <link>http://localhost:4000/2018/09/01/%E4%BD%BF%E7%94%A8jekyll+github-pages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/09/01/%E4%BD%BF%E7%94%A8jekyll+github-pages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</guid>
         
         <category>-jekyll</category>
         
