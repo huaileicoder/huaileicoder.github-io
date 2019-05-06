@@ -1,0 +1,44 @@
+---
+layout:     post
+title:      "测试代码覆盖率工具Emma"
+subtitle:   " "
+date:       2019-04-22
+author:     "huailei"
+header-img: "img/home-bg-o.jpg"
+tags:
+---
+## 介绍
+在这里介绍一下代码覆盖率工具Emma的安装使用以及代码覆盖率的意义。
+
+## 代码覆盖率的意义
+- > 把测试覆盖作为质量目标没有任何意义，而我们应该把它作为一种发现未被测试覆盖的代码的手段。
+
+
+首先需要明确这样一个概念，测试覆盖率并不是一定要达到多少才行，测试覆盖率并不是作为质量指标，代码覆盖率统计不能完全用来衡量代码质量。
+
+代码覆盖率存在的意义在于：
+1、分析未覆盖部分的代码，从而反推在前期测试设计是否充分，没有覆盖到的代码是否是测试设计的盲点，为什么没有考虑到？需求/设计不够清晰，测试设计的理解有误，工程方法应用后的造成的策略性放弃等等，之后进行补充测试用例设计。
+2、检测出程序中的废代码，可以逆向反推在代码设计中思维混乱点，提醒设计/开发人员理清代码逻辑关系，提升代码质量。
+3、代码覆盖率高不能说明代码质量高，但是反过来看，代码覆盖率低，代码质量不会高到哪里去，可以作为测试自我审视的重要工具之一。
+
+## 代码覆盖率工具
+在这里只介绍Emma，Emma的原理可以修改Jar文件、class文件字节码文件，覆盖粒度包含行、块、方法、类，性能较快。关于工具工作的流程和原理可以学习这篇文章[浅谈代码覆盖率](https://tech.youzan.com/code-coverage/)。
+
+## 安装步骤（eclipse）
+1、Help——Install New SoftWare——add
+
+2、Add下边的内容：
+Name:eclemma
+URL:http://update.eclemma.org/
+
+3、安装 、重启
+
+## 使用（eclipse）
+1、调出Coverage
+Window——show view ——other ——java——Coverage
+2、用Coverage启动程序
+3、跑要测试的代码，打开要测试的代码，刷新执行Coverage，覆盖率也会更新
+
+idea下Emma的安装和使用请参考https://www.w3cschool.cn/intellij_idea_doc/intellij_idea_doc-h3yp2fhz.html
+
+参考链接：https://tech.youzan.com/code-coverage/
