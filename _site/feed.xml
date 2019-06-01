@@ -5,9 +5,95 @@
     <description>Trust The Process</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 06 May 2019 19:00:33 +0800</pubDate>
-    <lastBuildDate>Mon, 06 May 2019 19:00:33 +0800</lastBuildDate>
+    <pubDate>Sat, 01 Jun 2019 16:37:12 +0800</pubDate>
+    <lastBuildDate>Sat, 01 Jun 2019 16:37:12 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
+    
+      <item>
+        <title>volatile内存语义</title>
+        <description>&lt;h3 id=&quot;volatile的特性&quot;&gt;volatile的特性&lt;/h3&gt;
+&lt;p&gt;理解volatile特性的一个好办法是把对volatile变量的单个读/写，看成是使用同一个锁对这些单个读/写做了同步。一个volatile变量的单个读/写操作，与一个普通变量的读/写操作都是使用同一个锁来同步，它们之间执行效果相同。&lt;/p&gt;
+
+&lt;p&gt;锁的happens-before规则保证释放锁和获取锁的两个线程之间的内存可见性，这意味着对一个volatile变量的读，总能看到任意线程对这个volatile变量最后的写入。锁的语义决定了临界区代码的执行具有原子性。&lt;/p&gt;
+
+&lt;p&gt;volatile变量自身具有下列特性：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;可见性：对一个volatile变量的读，总能看到任意线程对这个volatile变量最后的写入。&lt;/li&gt;
+  &lt;li&gt;原子性：对任意单个volatile变量的读/写具有原子性，但类似于volatile++这种复合操作 不具有原子性。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;从JDK1.5开始，volatile变量的读/写可以实现线程之间的通信。&lt;/p&gt;
+
+&lt;p&gt;从内存语义来说，volatile的写-读与锁的释放-获取有相同的内存语义；volatile写和锁的释放有相同的内存语义；volatile读与锁的获取有相同的内存语义。&lt;/p&gt;
+
+&lt;h3 id=&quot;volatile写-读的内存语义&quot;&gt;volatile写-读的内存语义&lt;/h3&gt;
+&lt;p&gt;volatile写的内存语义：当写一个volatile变量时，JMM会把该线程对应的本地内存中的共享变量值刷新到主内存。&lt;/p&gt;
+
+&lt;p&gt;volatile读的内存语义：当读一个volatile变量时，JMM会把该线程对应的本地内存置为无效。线程接下来将从主内存读取共享变量。&lt;/p&gt;
+
+&lt;p&gt;volatile写和volatile读的内存语义总结：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;线程A写一个volatile变量，实质上是线程A向接下来将要读这个volatile变量的某个线程发出了（其对共享变量所做修改的）消息。&lt;/li&gt;
+  &lt;li&gt;线程B读一个volatile变量，实质上是线程B接收了之前某个线程发出的（在写这个volatile变量之前对共享变量所做修改的）消息&lt;/li&gt;
+  &lt;li&gt;线程A写一个volatile变量，随后线程B读这个volatile变量，这个过程实质上是线程A通过主内存向线程B发送消息。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;内存屏障&quot;&gt;内存屏障&lt;/h3&gt;
+&lt;p&gt;JMM把内存屏障指令分为4类：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;屏障类型&lt;/th&gt;
+      &lt;th&gt;指令示例&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;LoadLoad Barriers&lt;/td&gt;
+      &lt;td&gt;Load1;LoadLoad;Load2&lt;/td&gt;
+      &lt;td&gt;确保Load1数据的装载先于Load2及所有后续装载指令的装载&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;StoreStore Barriers&lt;/td&gt;
+      &lt;td&gt;Store1;StoreStore;Store2&lt;/td&gt;
+      &lt;td&gt;确保Store1数据对其他处理器可见（刷新到内存）先于Store2及所有后续存储指令的存储&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;LoadStore Barriers&lt;/td&gt;
+      &lt;td&gt;Load1;LoadStore;Store2&lt;/td&gt;
+      &lt;td&gt;确保Load1数据装载先于Store2及所有后续的存储指令刷新到内存&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;StoreLoad Barriers&lt;/td&gt;
+      &lt;td&gt;Store1;StoreLoad;Load2&lt;/td&gt;
+      &lt;td&gt;确保Store1数据对其他处理器变得可见（指刷新到内存）先于Load2及所有后续装载指令的装载。StoreLoad Barriers会使该屏障之前的所有内存访问指令（存储和装载指令）完成之后，才执行该屏障之后的内存访问指令&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;StoreLoad Barriers是一个“全能型”的屏障，它同时具有其他3个屏障的效果。执行该屏障开销会很昂贵，因为当前处理器通常要把写缓冲区的数据全部刷新到内存中（Buffer Fully Flush）。&lt;/p&gt;
+
+&lt;h3 id=&quot;volatile内存语义的实现&quot;&gt;volatile内存语义的实现&lt;/h3&gt;
+&lt;p&gt;为了实现volatile的内存语义，编译器在生成字节码时，会在指令序列中插入内存屏障来禁止特定类型的处理器重排序。对于编译器来说，发现一个最优布置来最小化插入屏障的总数几乎不可能。为此，JMM采取保守策略。可以看到JMM实现上的一个特点：&lt;strong&gt;首先确保正确性，然后再去追求执行效率&lt;/strong&gt;。&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;在每个volatile写操作的前面插入一个StoreStore屏障&lt;/li&gt;
+  &lt;li&gt;在每个volatile写操作的后面插入一个StoreLoad屏障&lt;/li&gt;
+  &lt;li&gt;在每个volatile读操作的后面插入一个LoadLoad屏障&lt;/li&gt;
+  &lt;li&gt;在每个volatile读操作的后面插入一个LoadStore屏障&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在实际执行中，只要不改变volatile写-读的内存语义，编译器可以根据具体情况省略不必要的屏障。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 01 Jun 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/06/01/volatile%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/06/01/volatile%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89.html</guid>
+        
+        <category>concurrency</category>
+        
+        
+      </item>
     
       <item>
         <title>代码整洁之道-总结</title>

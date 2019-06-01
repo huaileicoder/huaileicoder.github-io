@@ -1,0 +1,57 @@
+---
+layout:     post
+title:      "volatile内存语义"
+subtitle:   " "
+date:       2019-06-01
+author:     "huailei"
+header-img: "img/post-bg-digital-native.jpg"
+tags:
+- concurrency
+---
+
+### volatile的特性
+理解volatile特性的一个好办法是把对volatile变量的单个读/写，看成是使用同一个锁对这些单个读/写做了同步。一个volatile变量的单个读/写操作，与一个普通变量的读/写操作都是使用同一个锁来同步，它们之间执行效果相同。
+
+锁的happens-before规则保证释放锁和获取锁的两个线程之间的内存可见性，这意味着对一个volatile变量的读，总能看到任意线程对这个volatile变量最后的写入。锁的语义决定了临界区代码的执行具有原子性。
+
+volatile变量自身具有下列特性：
+- 可见性：对一个volatile变量的读，总能看到任意线程对这个volatile变量最后的写入。
+- 原子性：对任意单个volatile变量的读/写具有原子性，但类似于volatile++这种复合操作 不具有原子性。
+
+从JDK1.5开始，volatile变量的读/写可以实现线程之间的通信。
+
+从内存语义来说，volatile的写-读与锁的释放-获取有相同的内存语义；volatile写和锁的释放有相同的内存语义；volatile读与锁的获取有相同的内存语义。
+
+### volatile写-读的内存语义
+volatile写的内存语义：当写一个volatile变量时，JMM会把该线程对应的本地内存中的共享变量值刷新到主内存。
+
+volatile读的内存语义：当读一个volatile变量时，JMM会把该线程对应的本地内存置为无效。线程接下来将从主内存读取共享变量。
+
+volatile写和volatile读的内存语义总结：
+- 线程A写一个volatile变量，实质上是线程A向接下来将要读这个volatile变量的某个线程发出了（其对共享变量所做修改的）消息。
+- 线程B读一个volatile变量，实质上是线程B接收了之前某个线程发出的（在写这个volatile变量之前对共享变量所做修改的）消息
+- 线程A写一个volatile变量，随后线程B读这个volatile变量，这个过程实质上是线程A通过主内存向线程B发送消息。
+
+### 内存屏障
+JMM把内存屏障指令分为4类：
+
+
+
+屏障类型 | 指令示例 | 说明
+---|---|---
+LoadLoad Barriers | Load1;LoadLoad;Load2 | 确保Load1数据的装载先于Load2及所有后续装载指令的装载
+StoreStore Barriers | Store1;StoreStore;Store2 | 确保Store1数据对其他处理器可见（刷新到内存）先于Store2及所有后续存储指令的存储
+LoadStore Barriers | Load1;LoadStore;Store2 | 确保Load1数据装载先于Store2及所有后续的存储指令刷新到内存
+StoreLoad Barriers | Store1;StoreLoad;Load2 | 确保Store1数据对其他处理器变得可见（指刷新到内存）先于Load2及所有后续装载指令的装载。StoreLoad Barriers会使该屏障之前的所有内存访问指令（存储和装载指令）完成之后，才执行该屏障之后的内存访问指令
+
+StoreLoad Barriers是一个“全能型”的屏障，它同时具有其他3个屏障的效果。执行该屏障开销会很昂贵，因为当前处理器通常要把写缓冲区的数据全部刷新到内存中（Buffer Fully Flush）。
+
+### volatile内存语义的实现
+为了实现volatile的内存语义，编译器在生成字节码时，会在指令序列中插入内存屏障来禁止特定类型的处理器重排序。对于编译器来说，发现一个最优布置来最小化插入屏障的总数几乎不可能。为此，JMM采取保守策略。可以看到JMM实现上的一个特点：**首先确保正确性，然后再去追求执行效率**。
+- 在每个volatile写操作的前面插入一个StoreStore屏障
+- 在每个volatile写操作的后面插入一个StoreLoad屏障
+- 在每个volatile读操作的后面插入一个LoadLoad屏障
+- 在每个volatile读操作的后面插入一个LoadStore屏障
+
+
+在实际执行中，只要不改变volatile写-读的内存语义，编译器可以根据具体情况省略不必要的屏障。
