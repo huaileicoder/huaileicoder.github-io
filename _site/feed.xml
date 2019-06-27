@@ -5,8 +5,8 @@
     <description>Trust The Process</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 27 Jun 2019 18:37:45 +0800</pubDate>
-    <lastBuildDate>Thu, 27 Jun 2019 18:37:45 +0800</lastBuildDate>
+    <pubDate>Thu, 27 Jun 2019 18:43:41 +0800</pubDate>
+    <lastBuildDate>Thu, 27 Jun 2019 18:43:41 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
@@ -27,13 +27,19 @@
 &lt;p&gt;这五种状态在不同的编程语言中会有简化合并。比如Java中就把就绪状态和运行状态合并并称为运行状态。除此之外，这五种状态也有可能被细化，比如Java就细化了休眠状态。&lt;/p&gt;
 
 &lt;h2 id=&quot;java的线程周期&quot;&gt;Java的线程周期&lt;/h2&gt;
-&lt;p&gt;Java线程在运行的生命周期可能处于六种不同的状态，在给定的一个时刻，线程只能处于其中的一个状态。
-1、&lt;strong&gt;NEW&lt;/strong&gt;：初始状态，线程被构建，但是还没有调用start()方法。
-2、&lt;strong&gt;RUNNABLE&lt;/strong&gt;：运行状态，Java线程将操作系统中的就绪和运行两种状态笼统的称作为“运行中”。
-3、&lt;strong&gt;BLOCKED&lt;/strong&gt;：阻塞状态，表示线程阻塞于锁。
-4、&lt;strong&gt;WAITING&lt;/strong&gt;：等待状态，表示线程进入等待状态，进入该状态表示当前线程需要等待其他线程做出一些特定动作（通知或中断）。
-5、&lt;strong&gt;TIME_WAITING&lt;/strong&gt;：超时等待状态，该状态不同于WAITING，它是可以在指定的时间自行返回的。
-6、&lt;strong&gt;TERMINATED&lt;/strong&gt;：终止状态，表示当前线程已经执行完毕。&lt;/p&gt;
+&lt;p&gt;Java线程在运行的生命周期可能处于六种不同的状态，在给定的一个时刻，线程只能处于其中的一个状态。&lt;/p&gt;
+
+&lt;p&gt;1、&lt;strong&gt;NEW&lt;/strong&gt;：初始状态，线程被构建，但是还没有调用start()方法。&lt;/p&gt;
+
+&lt;p&gt;2、&lt;strong&gt;RUNNABLE&lt;/strong&gt;：运行状态，Java线程将操作系统中的就绪和运行两种状态笼统的称作为“运行中”。&lt;/p&gt;
+
+&lt;p&gt;3、&lt;strong&gt;BLOCKED&lt;/strong&gt;：阻塞状态，表示线程阻塞于锁。&lt;/p&gt;
+
+&lt;p&gt;4、&lt;strong&gt;WAITING&lt;/strong&gt;：等待状态，表示线程进入等待状态，进入该状态表示当前线程需要等待其他线程做出一些特定动作（通知或中断）。&lt;/p&gt;
+
+&lt;p&gt;5、&lt;strong&gt;TIME_WAITING&lt;/strong&gt;：超时等待状态，该状态不同于WAITING，它是可以在指定的时间自行返回的。&lt;/p&gt;
+
+&lt;p&gt;6、&lt;strong&gt;TERMINATED&lt;/strong&gt;：终止状态，表示当前线程已经执行完毕。&lt;/p&gt;
 
 &lt;p&gt;在操作系统层面，Java中BOLCKED、WAITING、TIME_WAITING三种状态是一中状态，即休眠状态。也就是说只要Java线程处于三种状态之一，那么这个线程永远没有CPU的使用权。&lt;/p&gt;
 
