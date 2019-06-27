@@ -5,9 +5,180 @@
     <description>Trust The Process</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 15 Jun 2019 15:29:04 +0800</pubDate>
-    <lastBuildDate>Sat, 15 Jun 2019 15:29:04 +0800</lastBuildDate>
+    <pubDate>Thu, 27 Jun 2019 18:37:45 +0800</pubDate>
+    <lastBuildDate>Thu, 27 Jun 2019 18:37:45 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
+    
+      <item>
+        <title>Java线程的生命周期</title>
+        <description>&lt;h2 id=&quot;通用的线程周期&quot;&gt;通用的线程周期&lt;/h2&gt;
+&lt;p&gt;通用的线程周期基本上可以用五个状态来表示。这个五个状态分别是：&lt;code class=&quot;highlighter-rouge&quot;&gt;初始状态&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;就绪状态&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;运行状态&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;休眠状态&lt;/code&gt;以及&lt;code class=&quot;highlighter-rouge&quot;&gt;终止状态&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;1、&lt;strong&gt;初始状态&lt;/strong&gt;：指的是线程已经被创建，但还不允许分配CPU执行。这个创建是指在编程语言层面被创建，在操作系统层面，线程还没有被创建。&lt;/p&gt;
+
+&lt;p&gt;2、&lt;strong&gt;就绪状态&lt;/strong&gt;：指的是可以允许分配CPU执行。在这种状态下，真正的操作系统线程已经被创建了。&lt;/p&gt;
+
+&lt;p&gt;3、&lt;strong&gt;运行状态&lt;/strong&gt;：当有空闲的CPU时，操作系统会将其分配给一个就绪状态的线程，被分配到CPU的线程状态就转换为运行状态。&lt;/p&gt;
+
+&lt;p&gt;4、&lt;strong&gt;休眠状态&lt;/strong&gt;：运行状态的线程如果调用一个阻塞的API（例如以阻塞方式读文件）或者等待某个事件（例如条件变量），那么线程的状态就转换为休眠状态，同时释放CPU使用权，休眠状态的线程永远没有机会获得CPU使用权。当等待的事件出现了，线程就会自动从休眠状态转换为就绪状态。&lt;/p&gt;
+
+&lt;p&gt;5、&lt;strong&gt;终止状态&lt;/strong&gt;：线程执行完成或者出现异常就会进入终止状态，终止状态的线程不会切换到其他线程，进入终止状态就说明线程的生命周期结束了。&lt;/p&gt;
+
+&lt;p&gt;这五种状态在不同的编程语言中会有简化合并。比如Java中就把就绪状态和运行状态合并并称为运行状态。除此之外，这五种状态也有可能被细化，比如Java就细化了休眠状态。&lt;/p&gt;
+
+&lt;h2 id=&quot;java的线程周期&quot;&gt;Java的线程周期&lt;/h2&gt;
+&lt;p&gt;Java线程在运行的生命周期可能处于六种不同的状态，在给定的一个时刻，线程只能处于其中的一个状态。
+1、&lt;strong&gt;NEW&lt;/strong&gt;：初始状态，线程被构建，但是还没有调用start()方法。
+2、&lt;strong&gt;RUNNABLE&lt;/strong&gt;：运行状态，Java线程将操作系统中的就绪和运行两种状态笼统的称作为“运行中”。
+3、&lt;strong&gt;BLOCKED&lt;/strong&gt;：阻塞状态，表示线程阻塞于锁。
+4、&lt;strong&gt;WAITING&lt;/strong&gt;：等待状态，表示线程进入等待状态，进入该状态表示当前线程需要等待其他线程做出一些特定动作（通知或中断）。
+5、&lt;strong&gt;TIME_WAITING&lt;/strong&gt;：超时等待状态，该状态不同于WAITING，它是可以在指定的时间自行返回的。
+6、&lt;strong&gt;TERMINATED&lt;/strong&gt;：终止状态，表示当前线程已经执行完毕。&lt;/p&gt;
+
+&lt;p&gt;在操作系统层面，Java中BOLCKED、WAITING、TIME_WAITING三种状态是一中状态，即休眠状态。也就是说只要Java线程处于三种状态之一，那么这个线程永远没有CPU的使用权。&lt;/p&gt;
+
+&lt;h3 id=&quot;状态的转换&quot;&gt;状态的转换&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/img/Java thread state.jpg&quot; alt=&quot;Java线程状态转换图&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;1从new到runnable状态&quot;&gt;1、从NEW到RUNNABLE状态&lt;/h4&gt;
+&lt;p&gt;Java 刚创建出来的 Thread 对象就是 NEW 状态，而创建 Thread 对象主要有两种方法。一种是继承 Thread 对象，重写 run() 方法。&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyThread&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 线程需要执行的代码&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;......&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;MyThread&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myThread&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MyThread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;另一种是实现 Runnable 接口，重写 run() 方法，并将该实现类作为创建 Thread 对象的参数。&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Runner&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Runnable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 线程需要执行的代码&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;......&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thread&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Runner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;2runnable与blocked状态转换&quot;&gt;2、RUNNABLE与BLOCKED状态转换&lt;/h4&gt;
+&lt;p&gt;只有一种场景触发这种转换，就是线程等待synchronized的隐式锁。线程在进入synchronized关键字所修饰的方法或者代码块时会被阻塞，这时状态会从RUNNABLE转换到BLOCKED。而当等待的线程获取到synchronized的隐式锁时，就会从BLOCKED转换成RUNNABLE。&lt;/p&gt;
+
+&lt;p&gt;但是阻塞在java.concurrent包中Lock接口的线程状态是等待状态，因为java.concurrent包中Lock接口对于阻塞的实现均使用LockSupport类中的相关方法。&lt;/p&gt;
+
+&lt;p&gt;线程调用阻塞式API时，这时候线程状态是怎样呢？在操作系统层面，线程是会转到休眠状态的，但是在JVM层面，Java线程的状态不会发生变化，这时Java线程状态依然是RUNNABLE。&lt;strong&gt;JVM层面并不关心操作系统调度相关的状态&lt;/strong&gt;，因为在JVM看来，等待CPU使用权（此时操作系统处于就绪状态）和等待I/O（此时操作系统处于休眠状态）没有区别，都是在等待某个资源，所以都归入了RUNNABLE状态。另外平时说的调用阻塞式API，线程会阻塞，指的是操作系统线程的状态，并不是Java线程的状态。&lt;/p&gt;
+
+&lt;h4 id=&quot;3runnable与waiting状态转换&quot;&gt;3、RUNNABLE与WAITING状态转换&lt;/h4&gt;
+&lt;p&gt;有三种场景会触发RUNNABLE到WAITING状态的转换。&lt;/p&gt;
+
+&lt;p&gt;第一种，获得synchronized的隐式锁，调用无参数的Object.wait()方法。调用wait()方法之后，当前线程会释放synchronized的隐式锁，线程状态由RUNNABLE变为WAITING。当其他线程调用Object.notify()或Object.notifyAll()方法之后，线程状态将由WAITING转换为BLOCKED状态，从wait()返回的前提是获得了调用对象的锁。&lt;/p&gt;
+
+&lt;p&gt;第二种，调用无参数的Object.join()方法。如果一个线程A执行了thread.join()语句，其含义是：当前线程A等待thread线程终止之后才从thread.join()返回。当线程A执行了thread.join()时，A的状态会从RUNNABLE变为WAITING。当thread执行完之后，A线程才会从WAITING变为RUNNABLE。我们可以来看一下join()方法的实现：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;synchronized&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;millis&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isAlive&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;wait&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+       &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;我们可以看到join()方法中调用wait()方法，在线程A中执行了thread.join()语句，也就相当于调用了thead.wait(long timeout)方法，timeout是0。当thread线程执行完，join()方法也就返回了。&lt;/p&gt;
+
+&lt;p&gt;第三种，调用LockSupport.park()方法，前面已经说了java.concurrent包中Lock接口对于阻塞的实现均使用LockSupport类中的相关方法。调用LockSupport.park()方法，线程状态会从RUNNABLE变为WAITING。调用LockSupport.unpark(Thread)，线程状态又会从WAITING变为RUNNABLE。&lt;/p&gt;
+
+&lt;h4 id=&quot;4runnable与time_waiting状态转换&quot;&gt;4、RUNNABLE与TIME_WAITING状态转换&lt;/h4&gt;
+&lt;p&gt;TIMED_WAITING 和 WAITING 状态的区别，仅仅是触发条件多了超时参数。&lt;/p&gt;
+
+&lt;p&gt;调用下面几个方法都可以将线程状态从RUNNBALE转换为TIME_WAITING。&lt;/p&gt;
+
+&lt;p&gt;1、调用&lt;strong&gt;带超时参数&lt;/strong&gt;的 Thread.sleep(long mills)方法；&lt;/p&gt;
+
+&lt;p&gt;2、获得 synchronized 隐式锁的线程，调用&lt;strong&gt;带超时参数&lt;/strong&gt;的Object.wait(long)方法；&lt;/p&gt;
+
+&lt;p&gt;3、调用&lt;strong&gt;带超时参数&lt;/strong&gt;的Thread.join(long mills)方法；&lt;/p&gt;
+
+&lt;p&gt;4、调用&lt;strong&gt;带超时参数&lt;/strong&gt;的LockSupport.parkNanos(long nanos)方法；&lt;/p&gt;
+
+&lt;p&gt;5、调用&lt;strong&gt;带超时参数&lt;/strong&gt;的LockSupport.parkUntil(long deadline)方法；&lt;/p&gt;
+
+&lt;p&gt;同样，线程状态从TIME_WAITING返回RUNNABLE和WAITING差不多，就多了如果没有通知，超时就会返回。&lt;/p&gt;
+
+&lt;h4 id=&quot;5从runnable到terminated状态&quot;&gt;5、从RUNNABLE到TERMINATED状态&lt;/h4&gt;
+&lt;p&gt;线程执行完run()方法之后，会自动转换为TERMINATED状态。当线程执行run()方法时抛出异常也会导致线程终止。如果想要主动终止一个线程，可以调用线程的interrupt()方法。&lt;/p&gt;
+
+&lt;p&gt;中断可以理解为线程的一个标识位属性，它表示一个运行中的线程是否被其他线程进行了中断操作。线程可以通过检查自身是否被中断来进行响应，线程可以通过方法isInterrupted来进行判断是否被中断，也可以调用静态方法Thread.interrupted()来对当前线程的中断标识位进行复位。&lt;/p&gt;
+
+&lt;p&gt;另外被中断的线程可以通过异常的方式获得通知，当线程处于WAITING、TIME_WAITING状态时，如果调用该线程的interrupt()方法，会使该线程返回到RUNNABLE状态，同时该线程的代码会触发InterruptedException异常。不过需要注意的是wait()、sleep()这些方法在抛出InterruptedException之前，JVM会先将该线程的中断标识位清除，然后抛出InterruptedException，此时调用isInterruped()方法将会返回false。比如下面代码本意是当前线程被中断之后，退出while(true)，实际上这是一个死循环。&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thread&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;currentThread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isInterrupted&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InterruptedException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;中断操作是一种简便的线程间交互方式，而这种交互方式最适合用来取消或停止任务。除了中断以外，还可以利用一个boolean变量来控制是否需要停止任务并终止该线程。
+下面代码中，创建了一个线程CountThread，它不断进行变量累加，而主线程尝试对其进行中断操作和停止操作。&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Shutdown&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Runner&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;one&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Runner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;countThread&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;one&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;CountThread&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;countThread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 睡眠1秒，main线程对CountThread进行中断，使CountThread感知到中断而结束&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;SleepUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;second&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;countThread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;interrupt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;Runner&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;two&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Runner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;countThread&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;two&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;CountThread&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;countThread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 睡眠1秒，main线程对Runner two 进行取消，使CountThread感知到on为false而结束&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;SleepUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;second&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;two&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;cancel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Runner&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Runnable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;currentThread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isInterrupted&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++;&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Count i = &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;cancel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在上面例子中，main线程通过中断操作和cancel()方法均可是CountThread得以终止。这种通过标识位或者中断操作的方式能够使线程在终止时有机会去清理资源，而不是武断地将线程停止。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 22 Jun 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/06/22/Java%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/06/22/Java%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.html</guid>
+        
+        <category>concurrency</category>
+        
+        
+      </item>
     
       <item>
         <title>idea 快捷键</title>

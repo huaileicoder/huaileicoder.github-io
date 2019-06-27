@@ -1,5 +1,16 @@
+---
+layout:     post
+title:      "Java线程的生命周期"
+subtitle:   " "
+date:       2019-06-22
+author:     "huailei"
+header-img: "img/post-bg-kuaidi.jpg"
+tags:
+- concurrency
+---
 ## 通用的线程周期
-通用的线程周期基本上可以用五个状态来表示。这个五个状态分别是：初始状态、可运行状态、运行状态、休眠状态以及终止状态。
+通用的线程周期基本上可以用五个状态来表示。这个五个状态分别是：`初始状态`、`就绪状态`、`运行状态`、`休眠状态`以及`终止状态`。
+
 1、**初始状态**：指的是线程已经被创建，但还不允许分配CPU执行。这个创建是指在编程语言层面被创建，在操作系统层面，线程还没有被创建。
 
 2、**就绪状态**：指的是可以允许分配CPU执行。在这种状态下，真正的操作系统线程已经被创建了。
@@ -25,25 +36,22 @@ Java线程在运行的生命周期可能处于六种不同的状态，在给定�
 在操作系统层面，Java中BOLCKED、WAITING、TIME_WAITING三种状态是一中状态，即休眠状态。也就是说只要Java线程处于三种状态之一，那么这个线程永远没有CPU的使用权。
 
 ### 状态的转换
-![Java线程状态转换图](img/Java线程状态图.jpg)
+![Java线程状态转换图](/img/Java thread state.jpg)
 
 #### 1、从NEW到RUNNABLE状态
 Java 刚创建出来的 Thread 对象就是 NEW 状态，而创建 Thread 对象主要有两种方法。一种是继承 Thread 对象，重写 run() 方法。
 ```java
-// 自定义线程对象
 class MyThread extends Thread {
   public void run() {
     // 线程需要执行的代码
     ......
   }
 }
-// 创建线程对象
 MyThread myThread = new MyThread();
 
 ```
 另一种是实现 Runnable 接口，重写 run() 方法，并将该实现类作为创建 Thread 对象的参数。
 ```java
-// 实现 Runnable 接口
 class Runner implements Runnable {
   @Override
   public void run() {
@@ -51,7 +59,117 @@ class Runner implements Runnable {
     ......
   }
 }
-// 创建线程对象
 Thread thread = new Thread(new Runner());
 
 ```
+
+#### 2、RUNNABLE与BLOCKED状态转换
+只有一种场景触发这种转换，就是线程等待synchronized的隐式锁。线程在进入synchronized关键字所修饰的方法或者代码块时会被阻塞，这时状态会从RUNNABLE转换到BLOCKED。而当等待的线程获取到synchronized的隐式锁时，就会从BLOCKED转换成RUNNABLE。
+
+但是阻塞在java.concurrent包中Lock接口的线程状态是等待状态，因为java.concurrent包中Lock接口对于阻塞的实现均使用LockSupport类中的相关方法。
+
+线程调用阻塞式API时，这时候线程状态是怎样呢？在操作系统层面，线程是会转到休眠状态的，但是在JVM层面，Java线程的状态不会发生变化，这时Java线程状态依然是RUNNABLE。**JVM层面并不关心操作系统调度相关的状态**，因为在JVM看来，等待CPU使用权（此时操作系统处于就绪状态）和等待I/O（此时操作系统处于休眠状态）没有区别，都是在等待某个资源，所以都归入了RUNNABLE状态。另外平时说的调用阻塞式API，线程会阻塞，指的是操作系统线程的状态，并不是Java线程的状态。
+
+#### 3、RUNNABLE与WAITING状态转换
+有三种场景会触发RUNNABLE到WAITING状态的转换。
+
+第一种，获得synchronized的隐式锁，调用无参数的Object.wait()方法。调用wait()方法之后，当前线程会释放synchronized的隐式锁，线程状态由RUNNABLE变为WAITING。当其他线程调用Object.notify()或Object.notifyAll()方法之后，线程状态将由WAITING转换为BLOCKED状态，从wait()返回的前提是获得了调用对象的锁。
+
+第二种，调用无参数的Object.join()方法。如果一个线程A执行了thread.join()语句，其含义是：当前线程A等待thread线程终止之后才从thread.join()返回。当线程A执行了thread.join()时，A的状态会从RUNNABLE变为WAITING。当thread执行完之后，A线程才会从WAITING变为RUNNABLE。我们可以来看一下join()方法的实现：
+
+```java
+public final synchronized void join(long millis) {
+	...
+	while (isAlive()) {
+        wait(0);
+       }
+	...
+}
+```
+我们可以看到join()方法中调用wait()方法，在线程A中执行了thread.join()语句，也就相当于调用了thead.wait(long timeout)方法，timeout是0。当thread线程执行完，join()方法也就返回了。
+
+第三种，调用LockSupport.park()方法，前面已经说了java.concurrent包中Lock接口对于阻塞的实现均使用LockSupport类中的相关方法。调用LockSupport.park()方法，线程状态会从RUNNABLE变为WAITING。调用LockSupport.unpark(Thread)，线程状态又会从WAITING变为RUNNABLE。
+
+#### 4、RUNNABLE与TIME_WAITING状态转换
+TIMED_WAITING 和 WAITING 状态的区别，仅仅是触发条件多了超时参数。
+
+调用下面几个方法都可以将线程状态从RUNNBALE转换为TIME_WAITING。
+
+1、调用**带超时参数**的 Thread.sleep(long mills)方法；
+
+2、获得 synchronized 隐式锁的线程，调用**带超时参数**的Object.wait(long)方法；
+
+3、调用**带超时参数**的Thread.join(long mills)方法；
+
+4、调用**带超时参数**的LockSupport.parkNanos(long nanos)方法；
+
+5、调用**带超时参数**的LockSupport.parkUntil(long deadline)方法；
+
+同样，线程状态从TIME_WAITING返回RUNNABLE和WAITING差不多，就多了如果没有通知，超时就会返回。
+
+#### 5、从RUNNABLE到TERMINATED状态
+线程执行完run()方法之后，会自动转换为TERMINATED状态。当线程执行run()方法时抛出异常也会导致线程终止。如果想要主动终止一个线程，可以调用线程的interrupt()方法。
+
+中断可以理解为线程的一个标识位属性，它表示一个运行中的线程是否被其他线程进行了中断操作。线程可以通过检查自身是否被中断来进行响应，线程可以通过方法isInterrupted来进行判断是否被中断，也可以调用静态方法Thread.interrupted()来对当前线程的中断标识位进行复位。
+
+另外被中断的线程可以通过异常的方式获得通知，当线程处于WAITING、TIME_WAITING状态时，如果调用该线程的interrupt()方法，会使该线程返回到RUNNABLE状态，同时该线程的代码会触发InterruptedException异常。不过需要注意的是wait()、sleep()这些方法在抛出InterruptedException之前，JVM会先将该线程的中断标识位清除，然后抛出InterruptedException，此时调用isInterruped()方法将会返回false。比如下面代码本意是当前线程被中断之后，退出while(true)，实际上这是一个死循环。
+```java
+Thread thread = Thread.currentThread();
+while (true) {
+  if (thread.isInterrupted()) {
+    break;
+  }
+  ...
+  ...
+  try {
+    Thread.sleep(100);
+  } catch (InterruptedException e) {
+    e.printStackTrace();
+  }
+}
+
+```
+
+中断操作是一种简便的线程间交互方式，而这种交互方式最适合用来取消或停止任务。除了中断以外，还可以利用一个boolean变量来控制是否需要停止任务并终止该线程。
+下面代码中，创建了一个线程CountThread，它不断进行变量累加，而主线程尝试对其进行中断操作和停止操作。
+
+```java
+public class Shutdown {
+    public static void main(String[] args) {
+        Runner one = new Runner();
+        Thread countThread = new Thread(one, "CountThread");
+        countThread.start();
+        // 睡眠1秒，main线程对CountThread进行中断，使CountThread感知到中断而结束
+        SleepUtils.second(1);
+        countThread.interrupt();
+
+        Runner two = new Runner();
+        countThread = new Thread(two, "CountThread");
+        countThread.start();
+        // 睡眠1秒，main线程对Runner two 进行取消，使CountThread感知到on为false而结束
+        SleepUtils.second(1);
+        two.cancel();
+    }
+
+    private static class Runner implements Runnable {
+        private long i;
+        private volatile boolean on = true;
+
+        @Override
+        public void run() {
+            while (on && !Thread.currentThread().isInterrupted()) {
+                i++;
+            }
+            System.out.println("Count i = " + i);
+        }
+
+        public void cancel() {
+            on = false;
+        }
+    }
+
+}
+
+```
+
+在上面例子中，main线程通过中断操作和cancel()方法均可是CountThread得以终止。这种通过标识位或者中断操作的方式能够使线程在终止时有机会去清理资源，而不是武断地将线程停止。
