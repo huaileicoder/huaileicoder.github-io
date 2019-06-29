@@ -6,7 +6,7 @@ date:       2019-06-15
 author:     "huailei"
 header-img: "img/post-shortcut.jpg"
 tags:
-- tools
+     -tools
 ---
 
 ## Ctrl

@@ -6,7 +6,7 @@ date:       2019-06-01
 author:     "huailei"
 header-img: "img/post-bg-digital-native.jpg"
 tags:
-- concurrency
+     -concurrency
 ---
 
 ### volatile的特性

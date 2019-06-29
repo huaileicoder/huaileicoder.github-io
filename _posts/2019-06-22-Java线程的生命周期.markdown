@@ -6,7 +6,7 @@ date:       2019-06-22
 author:     "huailei"
 header-img: "img/post-bg-kuaidi.jpg"
 tags:
-- concurrency
+      -concurrency
 ---
 ## 通用的线程周期
 通用的线程周期基本上可以用五个状态来表示。这个五个状态分别是：`初始状态`、`就绪状态`、`运行状态`、`休眠状态`以及`终止状态`。
@@ -178,4 +178,4 @@ public class Shutdown {
 
 ```
 
-在上面例子中，main线程通过中断操作和cancel()方法均可是CountThread得以终止。这种通过标识位或者中断操作的方式能够使线程在终止时有机会去清理资源，而不是武断地将线程停止。
+在上面例子中，main线程通过中断操作和cancel()方法均可使CountThread得以终止。这种通过标识位或者中断操作的方式能够使线程在终止时有机会去清理资源，而不是武断地将线程停止。

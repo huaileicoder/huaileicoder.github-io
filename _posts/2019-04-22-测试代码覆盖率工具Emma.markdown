@@ -6,6 +6,7 @@ date:       2019-04-22
 author:     "huailei"
 header-img: "img/home-bg-o.jpg"
 tags:
+  -tools
 ---
 ## 介绍
 在这里介绍一下代码覆盖率工具Emma的安装使用以及代码覆盖率的意义。
