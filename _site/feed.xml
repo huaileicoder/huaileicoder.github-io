@@ -5,8 +5,8 @@
     <description>Trust The Process</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 09 Nov 2019 18:07:13 +0800</pubDate>
-    <lastBuildDate>Sat, 09 Nov 2019 18:07:13 +0800</lastBuildDate>
+    <pubDate>Sat, 09 Nov 2019 18:16:36 +0800</pubDate>
+    <lastBuildDate>Sat, 09 Nov 2019 18:16:36 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
@@ -142,6 +142,13 @@ StoreLoad Barriers | Store1;StoreLoad;Load2 | 确保Store1数据对其他处理�
 &lt;/ul&gt;
 
 &lt;p&gt;那么v被volatile修饰，操作1和操作2还可能重排序吗？如果没有的话，那么volatile做了哪些事情呢？&lt;/p&gt;
+
+&lt;h3 id=&quot;参考&quot;&gt;参考&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Java并发编程的艺术&lt;/li&gt;
+  &lt;li&gt;Java并发编程实战&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://time.geekbang.org/column/intro/159&quot;&gt;Java并发编程&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         <pubDate>Sat, 09 Nov 2019 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/2019/11/09/%E7%AC%94%E8%AE%B0-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8Bbug%E7%9A%84%E6%BA%90%E5%A4%B4%E4%BB%A5%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95.html</link>
