@@ -5,8 +5,8 @@
     <description>Trust The Process</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 09 Nov 2019 18:07:13 +0800</pubDate>
-    <lastBuildDate>Sat, 09 Nov 2019 18:07:13 +0800</lastBuildDate>
+    <pubDate>Mon, 11 Nov 2019 16:16:00 +0800</pubDate>
+    <lastBuildDate>Mon, 11 Nov 2019 16:16:00 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
@@ -114,7 +114,7 @@ StoreLoad Barriers | Store1;StoreLoad;Load2 | 确保Store1数据对其他处理�
 &lt;p&gt;6、线程join()规则：主线程 A 等待子线程 B 完成（主线程 A 通过调用子线程B 的 join() 方法实现），当子线程B完成后（主线A 中join()方法返回），主线程能够看到子线程的操作。&lt;/p&gt;
 
 &lt;p&gt;下面用例子解释一下这六条happens-before规则：
-因为volatile变量规则和锁的规则类似，这里只以1，2，3做说明。下面是以volatile写-读的示例以及happens-before关系图。&lt;/p&gt;
+因为volatile变量规则和锁的规则类似，这里只以1，2，3做说明。下面是以volatile写-读的示例。&lt;/p&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;VolatileExample&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
@@ -142,6 +142,13 @@ StoreLoad Barriers | Store1;StoreLoad;Load2 | 确保Store1数据对其他处理�
 &lt;/ul&gt;
 
 &lt;p&gt;那么v被volatile修饰，操作1和操作2还可能重排序吗？如果没有的话，那么volatile做了哪些事情呢？&lt;/p&gt;
+
+&lt;h3 id=&quot;参考&quot;&gt;参考&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Java并发编程的艺术&lt;/li&gt;
+  &lt;li&gt;Java并发编程实战&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://time.geekbang.org/column/intro/159&quot;&gt;Java并发编程&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         <pubDate>Sat, 09 Nov 2019 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/2019/11/09/%E7%AC%94%E8%AE%B0-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8Bbug%E7%9A%84%E6%BA%90%E5%A4%B4%E4%BB%A5%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95.html</link>
