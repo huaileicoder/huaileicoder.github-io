@@ -169,6 +169,31 @@
             ">
     			
 <div class="post-preview">
+    <a href="/2019/11/09/%E7%AC%94%E8%AE%B0-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8Bbug%E7%9A%84%E6%BA%90%E5%A4%B4%E4%BB%A5%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95.html">
+        <h2 class="post-title">
+            笔记-并发编程bug的源头以及解决办法
+        </h2>
+        
+        <h3 class="post-subtitle">
+             
+        </h3>
+        
+        <div class="post-content-preview">
+            缓存导致的可见性问题
+可见性是一个线程对共享变量的修改，另外一个线程能立刻看到。
+
+为了提高处理速度，处理器不直接与内存进行通信，而是先将系统内存的数据读到内部缓存后再进行操作，但操作完不知道何时会写到内存。对于单核来说，所有的线程都是运行在这个CPU上的，操作的都是同一份缓存。线程A更新了变量V的值，那么线程B之后再访问变量V,得到的一定是V的最新值。
+
+但是在多核上，每一个CPU都有自己...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huailei on November 9, 2019
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
     <a href="/2019/06/22/Java%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.html">
         <h2 class="post-title">
             Java线程的生命周期
@@ -505,7 +530,7 @@ top命令有一些常用的参数：
                             
                         
                             
-                                <a href="/tags/#-concurrency" title="-concurrency" rel="2">
+                                <a href="/tags/#-concurrency" title="-concurrency" rel="3">
                                     -concurrency
                                 </a>
                             
