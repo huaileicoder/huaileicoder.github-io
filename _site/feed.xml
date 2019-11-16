@@ -5,9 +5,138 @@
     <description>Trust The Process</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 11 Nov 2019 16:22:19 +0800</pubDate>
-    <lastBuildDate>Mon, 11 Nov 2019 16:22:19 +0800</lastBuildDate>
+    <pubDate>Sat, 16 Nov 2019 20:17:40 +0800</pubDate>
+    <lastBuildDate>Sat, 16 Nov 2019 20:17:40 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
+    
+      <item>
+        <title>笔记-volatile内存语义</title>
+        <description>&lt;h3 id=&quot;volatile的特性&quot;&gt;volatile的特性&lt;/h3&gt;
+&lt;p&gt;理解volatile特性的一个好办法是把对volatile变量的单个读/写，看成是使用同一个锁对这些单个读/写做了同步。一个volatile变量的单个读/写操作，与一个普通变量的读/写操作都是使用同一个锁来同步，它们之间执行效果相同。&lt;/p&gt;
+
+&lt;p&gt;锁的happens-before规则保证释放锁和获取锁的两个线程之间的内存可见性，这意味着对一个volatile变量的读，总能看到任意线程对这个volatile变量最后的写入。&lt;/p&gt;
+
+&lt;p&gt;volatile变量自身具有下列特性：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;可见性：对一个volatile变量的读，总能看到任意线程对这个volatile变量最后的写入。&lt;/li&gt;
+  &lt;li&gt;原子性：对任意单个volatile变量的读/写具有原子性，但类似于volatile++这种复合操作 不具有原子性。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;从内存语义来说，volatile的写-读与锁的释放-获取有相同的内存语义：volatile写和锁的释放有相同的内存语义；volatile读与锁的获取有相同的内存语义。&lt;/p&gt;
+
+&lt;h3 id=&quot;volatile写-读的内存语义&quot;&gt;volatile写-读的内存语义&lt;/h3&gt;
+&lt;p&gt;volatile写的内存语义：当写一个volatile变量时，JMM会把该线程对应的本地内存中的共享变量值刷新到主内存。&lt;/p&gt;
+
+&lt;p&gt;以VolatileExample为例:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-Java&quot;&gt;class VolatileExample {
+  int x = 0;
+  volatile boolean v = false;
+  public void writer() {
+    x = 1;
+    v = true;
+  }
+  public void reader() {
+    if (v) {
+      System.out.println(x);
+      ······
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/huaileicoder/huaileicoder.github.io/blob/master/img/%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A4%BA%E6%84%8F%E5%9B%BE1.png?raw=true&quot; alt=&quot;共享变量的状态示意图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如上图所示，线程A在写flag变量之后，本地内存A中被线程A更新过的两个共享变量的值被刷新在主内存中。此时，本地内存A和主内存中的共享变量的值是一致的。&lt;/p&gt;
+
+&lt;p&gt;volatile读的内存语义：当读一个volatile变量时，JMM会把该线程对应的本地内存置为无效。线程接下来将从主内存读取共享变量。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://github.com/huaileicoder/huaileicoder.github.io/blob/master/img/%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A4%BA%E6%84%8F%E5%9B%BE2.png?raw=true&quot; alt=&quot;共享变量的状态示意图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如上图所示，在读flag变量后，本地内存B包含的值已经被置为无效。此时，线程B必须从主内存中读取共享变量。线程B的读取操作将导致本地内存B与主内存中的共享变量的值变成一致。&lt;/p&gt;
+
+&lt;p&gt;如果把volatile写和volatile读两个步骤综合来看的话，在读线程B读一个volatile变量后，写线程A在写这个volatile变量之前所有可见的共享变量的值都会立即变得对读线程B可见。&lt;/p&gt;
+
+&lt;p&gt;volatile写和volatile读的内存语义总结：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;线程A写一个volatile变量，实质上是线程A向接下来将要读这个volatile变量的某个线程发出了（其对共享变量所做修改的）消息。&lt;/li&gt;
+  &lt;li&gt;线程B读一个volatile变量，实质上是线程B接收了之前某个线程发出的（在写这个volatile变量之前对共享变量所做修改的）消息&lt;/li&gt;
+  &lt;li&gt;线程A写一个volatile变量，随后线程B读这个volatile变量，这个过程实质上是线程A通过主内存向线程B发送消息。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;volatile内存语义的实现&quot;&gt;volatile内存语义的实现&lt;/h3&gt;
+&lt;p&gt;之前提到重排序分为编译器重排序和处理器重排序。为了实现volatile内存语义，JMM会分别限制这两种类型的重排序类型。下面是JMM针对编译器制定的volatile重排序规则。&lt;/p&gt;
+
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th&gt;是否能重排序&lt;/th&gt;
+        &lt;th colspan=&quot;3&quot;&gt;第二个操作&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;th&gt;第一个操作&lt;/th&gt;
+        &lt;th&gt;普通读/写&lt;/th&gt;
+        &lt;th&gt;volatile读&lt;/th&gt;
+        &lt;th&gt;volatile写&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;普通读/写&lt;/td&gt;
+        &lt;td&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;/td&gt;
+        &lt;td&gt;NO&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;volatile读&lt;/td&gt;
+        &lt;td&gt;NO&lt;/td&gt;
+        &lt;td&gt;NO&lt;/td&gt;
+        &lt;td&gt;NO&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;volatile写&lt;/td&gt;
+        &lt;td&gt;&lt;/td&gt;
+        &lt;td&gt;NO&lt;/td&gt;
+        &lt;td&gt;NO&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;p&gt;上面表格意思是：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;当第一个操作是普通读/写时，如果第二个操作是volatile写时，则编译器不允许这种重排序。&lt;/li&gt;
+  &lt;li&gt;当第一个操作是volatile读时，不管第二个操作是什么，都不能重排序。这个规则确保volatile读之后的操作不会被编译器重排序到volatile读之前。&lt;/li&gt;
+  &lt;li&gt;当第二个操作是volatile写时，不管第一个操作是什么，都不能重排序。这个规则确保volatile写之前的操作不会被编译器重排序到volatile写之后。&lt;/li&gt;
+  &lt;li&gt;当第一个操作是volatile写，第二个操作是volatile读时不允许重排序。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;为了实现volatile的内存语义，编译器在生成字节码时，会在指令序列中插入内存屏障来禁止特定类型的处理器重排序。对于编译器来说，发现一个最优布置来最小化插入屏障的总数几乎不可能。为此，JMM采取保守策略。下面是基于保守策略的JMM内存屏障插入策略。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在每个volatile写操作的前面插入一个StoreStore屏障&lt;/li&gt;
+  &lt;li&gt;在每个volatile写操作的后面插入一个StoreLoad屏障&lt;/li&gt;
+  &lt;li&gt;在每个volatile读操作的后面插入一个LoadLoad屏障&lt;/li&gt;
+  &lt;li&gt;在每个volatile读操作的后面插入一个LoadStore屏障&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;下面是保守策略下，volatile写插入内存屏障后生成的指令序列示意图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://github.com/huaileicoder/huaileicoder.github.io/blob/master/img/volatile%E5%86%99%E6%8C%87%E4%BB%A4%E5%BA%8F%E5%88%97%E7%A4%BA%E6%84%8F%E5%9B%BE.png?raw=true&quot; alt=&quot;volatile写指令序列示意图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上图中的StoreStore屏障可以保证在volatile写之前，其前面的所有普通写操作已经对任意处理器可见了。这是因为StoreStore屏障将保障上面所有的普通写在volatile写之前刷新到主内存。&lt;/p&gt;
+
+&lt;p&gt;volatile写后面的StoreLoad屏障作用是避免volatile写与后面可能有的volatile读/写操作重排序。因为编译器常常无法准确判断在一个volatile写的后面是否需要插入一个StoreLoad屏障（比如，一个volatile写之后直接return），为了保证volatile的内存语义，JMM采取保守策略：在每个volatile写的后面或者在每个volatile读的前面插入一个StoreLoad屏障。&lt;/p&gt;
+
+&lt;p&gt;下面是保守策略下，volatile读插入内存屏障后生成的指令序列示意图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://github.com/huaileicoder/huaileicoder.github.io/blob/master/img/volatile%E8%AF%BB%E6%8C%87%E4%BB%A4%E5%BA%8F%E5%88%97%E7%A4%BA%E6%84%8F%E5%9B%BE.png?raw=true&quot; alt=&quot;volatile读指令序列示意图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上图中的LoadLoad屏障用来禁止处理器把上面的volatile读与下面的普通读重排序。LoadStore屏障用来禁止处理器把上面的volatile读与下面的普通写重排序。&lt;/p&gt;
+
+&lt;p&gt;但是在实际执行中，只要不改变volatile写-读的内存语义，编译器可以根据具体情况省略不必要的屏障。并且由于不同的处理器有不同“松紧度”的处理器内存模型，内存屏障的插入还可以根据具体的处理器内存模型继续优化。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 16 Nov 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/11/16/%E7%AC%94%E8%AE%B0-volatile%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/11/16/%E7%AC%94%E8%AE%B0-volatile%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89.html</guid>
+        
+        <category>-concurrency</category>
+        
+        
+      </item>
     
       <item>
         <title>笔记-并发编程bug的源头以及解决办法</title>
@@ -1956,74 +2085,6 @@ top命令有一些常用的参数：&lt;/p&gt;
         <guid isPermaLink="true">http://localhost:4000/2018/09/15/Linux%E5%91%BD%E4%BB%A4-top.html</guid>
         
         <category>-Linux</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>使用jekyll+github pages 搭建个人博客</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;But I Still Love You&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;搭建原因&quot;&gt;搭建原因&lt;/h2&gt;
-&lt;p&gt;作为一个萌新，一直想有一个自己的博客，前一段时间自己试着使用&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll+github pages&lt;/code&gt; 来搭建自己的博客，其中有遇到很多的坑，比如搭建jekyll，以及使用jekyll theme的时候，慢慢的自己也搞懂这是个怎么回事，现在也写下这篇文章来记录一下，希望能对有些人有一点点帮助。&lt;/p&gt;
-
-&lt;h2 id=&quot;搭建环境&quot;&gt;搭建环境&lt;/h2&gt;
-&lt;p&gt;搭建博客需要jekyll以及GitHub，其中GitHub提供一个&lt;code class=&quot;highlighter-rouge&quot;&gt;pages&lt;/code&gt;功能，允许用户自定义项目首页，用来替代默认的源码列表&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;github Pages可以被认为是用户编写的、托管在github上的静态网页&lt;/li&gt;
-  &lt;li&gt;Jekyll是一个静态站点生成器，它会根据网页源码生成静态文件&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;jekyll官网是这样介绍的&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;Jekyll 是一个简单的博客形态的静态站点生产机器。它有一个模版目录，其中包含原始文本格式的文档，通过一个转换器（如 Markdown）和我们的 Liquid 渲染器转化成一个完整的可发布的静态网站，你可以发布在任何你喜爱的服务器上。Jekyll 也可以运行在 GitHub Page 上，也就是说，你可以使用 GitHub 的服务来搭建你的项目页面、博客或者网站，而且是完全免费的&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;开始搭建&quot;&gt;开始搭建&lt;/h2&gt;
-&lt;h3 id=&quot;github-pages&quot;&gt;GitHub Pages&lt;/h3&gt;
-&lt;p&gt;首先肯定要使用到GitHub，所以有一个自己的GitHub账号就不要再说了。当有了自己的GitHub账号之后需要创建一个新的仓库，并命名为username.github.io，比如我的username是 
-&lt;code class=&quot;highlighter-rouge&quot;&gt;huaileicoder&lt;/code&gt;，那新建的仓库就是&lt;code class=&quot;highlighter-rouge&quot;&gt;huaileicoder.github.io&lt;/code&gt;。  &lt;br /&gt;
-&lt;img src=&quot;/img/github-create new repository.png&quot; alt=&quot;新建一个仓库&quot; /&gt;&lt;br /&gt;
-创建好之后进入仓库中选择setting，找到&lt;code class=&quot;highlighter-rouge&quot;&gt;GitHub Pages&lt;/code&gt;，然后将你的site发布到&lt;code class=&quot;highlighter-rouge&quot;&gt;https://username.github.io/&lt;/code&gt;。&lt;br /&gt;
-&lt;img src=&quot;/img/github-pages.png&quot; alt=&quot;github-pages&quot; /&gt;
-我们去访问&lt;code class=&quot;highlighter-rouge&quot;&gt;https://username.github.io/&lt;/code&gt;，会发现只有一个简单的页面。&lt;/p&gt;
-
-&lt;h3 id=&quot;安装jekyll&quot;&gt;安装jekyll&lt;/h3&gt;
-&lt;p&gt;安装jekyll其实非常简单，但是你得做好一些准备工作，根据jekyll官网上介绍需要：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Ruby&lt;/li&gt;
-  &lt;li&gt;RubyGems&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;所以需要前往&lt;a href=&quot;https://rubyinstaller.org/downloads/&quot;&gt;https://rubyinstaller.org/downloads/&lt;/a&gt;下载&lt;code class=&quot;highlighter-rouge&quot;&gt;Ruby&lt;/code&gt;以及&lt;code class=&quot;highlighter-rouge&quot;&gt;DEVELOPMENT KIT &lt;/code&gt;，DEVELOPMENT KIT有不同的版本，可以根据你的系统选择相应的工具。&lt;br /&gt;
-安装ruby的时候，根据的你的选择放到相应的盘中，并且勾选&lt;code class=&quot;highlighter-rouge&quot;&gt;Add Ruby executables to your PATH&lt;/code&gt;。&lt;br /&gt;
-安装好ruby之后可以使用指令&lt;code class=&quot;highlighter-rouge&quot;&gt;ruby -v&lt;/code&gt;查看ruby是否安装完成&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:\Users\Administrator&amp;gt;ruby -v
-ruby 2.5.1p57 (2018-03-29 revision 63029) [x64-mingw32]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;安装dev kit 的时候一般把安装目录改为RubyDevKit，安装好dev-kit之后，使用终端(就是Windows下使用cmd启动的那个小黑窗)进入RubyDevKit目录，然后执行&lt;code class=&quot;highlighter-rouge&quot;&gt;ruby dk.rb init&lt;/code&gt;，然后使用文本编辑器打开RubyDevKit目录中的&lt;code class=&quot;highlighter-rouge&quot;&gt;config.yml&lt;/code&gt;。在文件的最后加上&lt;code class=&quot;highlighter-rouge&quot;&gt;- D:/Ruby25-x64&lt;/code&gt;，这是自己的Ruby安装目录，然后在刚才的终端下执行&lt;code class=&quot;highlighter-rouge&quot;&gt;ruby dk.rb install&lt;/code&gt;。&lt;br /&gt;
-接着在终端中输入&lt;code class=&quot;highlighter-rouge&quot;&gt;gem -v&lt;/code&gt;，可以看到相应的gem版本。&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem -v
-2.7.6
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;然后执行&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install jekyll&lt;/code&gt;安装jekyll，因为jekyll很多安装包是由&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle&lt;/code&gt;来安装的，并且如果没有的话启动jekyll会报错的，所以需要接着执行&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install bundle&lt;/code&gt;，也可以直接这样&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install jekyll bundle&lt;/code&gt;来安装。安装好之后执行&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll new dir&lt;/code&gt;，然后在终端中&lt;code class=&quot;highlighter-rouge&quot;&gt;cd dir&lt;/code&gt;接着执行&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle install&lt;/code&gt;来安装jekyll的依赖包，可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle update&lt;/code&gt;来进行依赖包的更新。所有准备工作都做好之后，那就直接执行&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;，会有一些版本不匹配的问题，可以看到终端上会有提示信息让你使用&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle exec jekyll serve&lt;/code&gt;来启动jekyll，正常启动之后访问&lt;code class=&quot;highlighter-rouge&quot;&gt;http://127.0.0.1:4000&lt;/code&gt;来进入。这时候我们只能看到一个简单地页面，所以一般我们都会使用到别人已经做好的模板，当然你能力足够的话完全可以自己来写。&lt;/p&gt;
-
-&lt;h2 id=&quot;jekyll-theme&quot;&gt;jekyll theme&lt;/h2&gt;
-&lt;p&gt;使用jekyll原始的页面是非常简陋的，所以我们可以使用别人写好的jekyll theme来搭建一个”面相姣好”的博客页面。&lt;a href=&quot;http://jekyllthemes.org&quot;&gt;这里&lt;/a&gt;有许多模板，你可以挑一款自己喜欢的。我使用的是&lt;a href=&quot;http://huangxuan.me/&quot;&gt;Hux&lt;/a&gt;修改之后的模板，在&lt;a href=&quot;https://github.com/huaileicoder/huxpro.github.io&quot;&gt;这里&lt;/a&gt;可以看到你如何修改文件变为你自己的博客，这里只是一个模板，如果你对博客要求的东西不是太多的我想这已经够用了。其中配置&lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;更加详细的信息可以从&lt;a href=&quot;http://jekyllcn.com/&quot;&gt;jekyll官网&lt;/a&gt;获取。不过需要提醒一句的是文章中涉及到的评论系统&lt;code class=&quot;highlighter-rouge&quot;&gt;duoshuo&lt;/code&gt;以及&lt;code class=&quot;highlighter-rouge&quot;&gt;disqus&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;duoshuo&lt;/code&gt;已不能使用，&lt;code class=&quot;highlighter-rouge&quot;&gt;disqus&lt;/code&gt;很早就被墙了，所以都不能使用，在这里推荐大家使用&lt;code class=&quot;highlighter-rouge&quot;&gt;gitment&lt;/code&gt;，从网上可以搜到很多的教程来使用&lt;code class=&quot;highlighter-rouge&quot;&gt;gitment&lt;/code&gt;搭建评论系统。&lt;br /&gt;
-另外在对第一次使用模板的时候可以会因为一些配置文件版本问题不匹配，所以需要自己根据实际情况去解决，不过遇到这些文件不匹配的时候可以试着自己使用&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle install xxxxx&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install xxxxxx&lt;/code&gt;去安装对应的文件，如果实在安装不了，可以试着从其他地方找到对应版本号的文件粘贴进去，最后实在不行那就安装一个匹配的jekyll，我想这是遇到自己觉得解决不了的问题的时候最简单的方法。&lt;/p&gt;
-
-&lt;h2 id=&quot;后记&quot;&gt;后记&lt;/h2&gt;
-&lt;p&gt;当第一次使用&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll+github pages&lt;/code&gt;来搭建博客的时候，不知道自己要做什么，就在Google查相关的信息，这样的信息还是不少的，所以在这里感谢那些在网上贡献自己知识的人。我不知道自己多少次安了卸，卸了安，安装的过程中自己根据终端的错误信息，以及网上的教程，就知道什么样的错误该怎么解决，所以呢，如果对这方面不是有些了解的话，你一次就安装成功之后可以卸载，然后自己再按着这样的方式再去安装，安装的时候可以更换ruby的版本，我想你会有不同的体验的。安装的教程也可以参考 &lt;a href=&quot;http://jekyllcn.com/&quot;&gt;jekyll官网&lt;/a&gt;，里面有更加详细的信息。&lt;/p&gt;
-</description>
-        <pubDate>Sat, 01 Sep 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/09/01/%E4%BD%BF%E7%94%A8jekyll+github-pages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/09/01/%E4%BD%BF%E7%94%A8jekyll+github-pages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</guid>
-        
-        <category>-jekyll</category>
-        
-        <category>-githubpages</category>
         
         
       </item>
