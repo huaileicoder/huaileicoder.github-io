@@ -13,7 +13,7 @@ future: true
 
 # SNS settings
 RSS: false
-zhihu_username:     huai-lei-18
+#zhihu_username:     huai-lei-18
 github_username:    huaileicoder
 twitter_username:  	KobeKawhli
 #facebook_username:  brant.kobe.902
